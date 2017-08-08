@@ -46,4 +46,20 @@ public class PrinterTest{
 		assertEquals(123, result);
 	}
 	
+	@Test
+	public void printerCanBeSwtichedON(){
+		printer1.switchON();
+		boolean status = printer1.isOn();
+		assertEquals(true, status);
+	}
+	
+	@Test
+	public void printerCanBeSwitchedOFF(){
+		printer1.switchON();
+		boolean status = printer1.isOn();
+		printer1.switchOFF();
+		status = printer1.isOn();
+		assertEquals(false, status);
+	}
+	
 }

@@ -6,12 +6,14 @@ public class Printer {
 	private String model;
 	private int count;
 	private PaperTray paperTray;
+	private boolean statusON;
 	
 	public Printer(String brand, String model, int limit){
 		this.brand = brand;
 		this.model = model;
 		this.count = 0;
 		this.paperTray = new PaperTray(limit);
+		this.statusON = false;
 	}
 
 	public String getBrand() {
@@ -44,5 +46,17 @@ public class Printer {
 
 	public void setPaperTray(PaperTray paperTray) {
 		this.paperTray = paperTray;
+	}
+
+	public boolean isOn() {
+		return statusON;
+	}
+
+	public void switchON() {
+		this.statusON = true;
+	}
+	
+	public void switchOFF() {
+		this.statusON = false;
 	}
 }
