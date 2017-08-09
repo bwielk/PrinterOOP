@@ -1,14 +1,14 @@
 package printers;
 
 public class Printer {
-	
+
 	private String brand;
 	private String model;
 	private int count;
 	private PaperTray paperTray;
 	private boolean statusON;
-	
-	public Printer(String brand, String model, int limit){
+
+	public Printer(String brand, String model, int limit) {
 		this.brand = brand;
 		this.model = model;
 		this.count = 0;
@@ -55,30 +55,30 @@ public class Printer {
 	public void switchON() {
 		this.statusON = true;
 	}
-	
+
 	public void switchOFF() {
 		this.statusON = false;
 	}
-	
+
 	public void addPaper(Paper sheet) {
 		getPaperTray().addPaper(sheet);
 	}
-	
-	public int paperInTheTray(){
+
+	public int paperInTheTray() {
 		return getPaperTray().paperInTheTray();
 	}
-	
-	public String printOff(){
-		if(this.statusON == true){
-			if(getPaperTray().paperInTheTray() > 0){
+
+	public String printOff() {
+		if (this.statusON == true) {
+			if (getPaperTray().paperInTheTray() > 0) {
 				int sheetsIn = getPaperTray().getTray().size();
-				getPaperTray().getTray().remove(sheetsIn-1);
-				this.count +=1;
+				getPaperTray().getTray().remove(sheetsIn - 1);
+				this.count += 1;
 				return "A page has been printed off";
-			}else{
+			} else {
 				return "No paper";
 			}
-		}else{
+		} else {
 			return "The printer is OFF. Switch it on";
 		}
 	}
