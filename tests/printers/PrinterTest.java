@@ -9,11 +9,15 @@ public class PrinterTest{
 
 	private Printer printer1;
 	private Printer printer2;
+	private Paper sheet1;
+	private Paper sheet2;
 	
 	@Before
 	public void before(){
 		printer1 = new Printer("Dell", "1234", 100);
 		printer2 = new Printer("HP", "x434", 123);
+		sheet1 = new Paper();
+		sheet2 = new Paper();
 	}
 	
 	@Test
@@ -60,6 +64,13 @@ public class PrinterTest{
 		printer1.switchOFF();
 		status = printer1.isOn();
 		assertEquals(false, status);
+	}
+	
+	@Test
+	public void doesNotPrintIfNoPaper(){
+		printer1.addPaper(sheet1);
+		printer1.printOff();
+		assertEquals("No paper", printer1.printOff());
 	}
 	
 }

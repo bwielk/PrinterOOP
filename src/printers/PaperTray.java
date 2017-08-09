@@ -15,6 +15,12 @@ public class PaperTray {
 	public int getLimit() {
 		return limit;
 	}
+	
+	
+	public ArrayList<Paper> getTray() {
+		return paperTray;
+	}
+
 
 	public void setLimit(int limit) {
 		this.limit = limit;
