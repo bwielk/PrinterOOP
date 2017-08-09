@@ -70,6 +70,7 @@ public class PrinterTest{
 	public void doesNotPrintIfNoPaper(){
 		printer1.addPaper(sheet1);
 		printer1.addPaper(sheet2);
+		printer1.switchON();
 		printer1.printOff();
 		printer1.printOff();
 		assertEquals("No paper", printer1.printOff());
@@ -82,10 +83,18 @@ public class PrinterTest{
 		printer1.addPaper(sheet2);
 		printer1.addPaper(sheet1);
 		printer1.addPaper(sheet2);
+		printer1.switchON();
 		printer1.printOff();
 		printer1.printOff();
 		printer1.printOff();
 		assertEquals("A page has been printed off", printer1.printOff());
 		assertEquals(4, printer1.getCount());
+	}
+	
+	@Test
+	public void doesntPrintOffIfSwitchedOff(){
+		printer1.addPaper(sheet1);
+		printer1.switchOFF();
+		assertEquals("The printer is OFF. Switch it on", printer1.printOff());
 	}
 }

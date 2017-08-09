@@ -17,6 +17,7 @@ public class PaperTrayTest{
 	@Before
 	public void before(){
 		printer1 = new Printer("Toshiba", "0008", 100);
+		printer1.switchON();
 		paperTray = new PaperTray(100);
 		sheet1 = new Paper();
 		sheet2 = new Paper();

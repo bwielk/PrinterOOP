@@ -69,13 +69,17 @@ public class Printer {
 	}
 	
 	public String printOff(){
-		if(getPaperTray().paperInTheTray() > 0){
-			int sheetsIn = getPaperTray().getTray().size();
-			getPaperTray().getTray().remove(sheetsIn-1);
-			this.count +=1;
-			return "A page has been printed off";
+		if(this.statusON == true){
+			if(getPaperTray().paperInTheTray() > 0){
+				int sheetsIn = getPaperTray().getTray().size();
+				getPaperTray().getTray().remove(sheetsIn-1);
+				this.count +=1;
+				return "A page has been printed off";
+			}else{
+				return "No paper";
+			}
 		}else{
-			return "No paper";
+			return "The printer is OFF. Switch it on";
 		}
 	}
 }

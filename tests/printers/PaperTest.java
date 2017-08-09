@@ -15,6 +15,7 @@ public class PaperTest extends Paper {
 	@Before
 	public void before(){
 		printer1 = new Printer("Toshiba", "0008", 100);
+		printer1.switchON();
 		sheet1 = new Paper();
 		sheet2 = new Paper();
 	}
