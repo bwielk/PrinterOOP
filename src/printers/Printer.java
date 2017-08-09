@@ -59,4 +59,12 @@ public class Printer {
 	public void switchOFF() {
 		this.statusON = false;
 	}
+	
+	public void addPaper(Paper sheet) {
+		getPaperTray().addPaper(sheet);
+	}
+	
+	public int paperInTheTray(){
+		return getPaperTray().paperInTheTray();
+	}
 }
