@@ -69,8 +69,23 @@ public class PrinterTest{
 	@Test
 	public void doesNotPrintIfNoPaper(){
 		printer1.addPaper(sheet1);
+		printer1.addPaper(sheet2);
+		printer1.printOff();
 		printer1.printOff();
 		assertEquals("No paper", printer1.printOff());
+		assertEquals(2, printer1.getCount());
 	}
 	
+	@Test
+	public void doesPrintIfPaperIn(){
+		printer1.addPaper(sheet1);
+		printer1.addPaper(sheet2);
+		printer1.addPaper(sheet1);
+		printer1.addPaper(sheet2);
+		printer1.printOff();
+		printer1.printOff();
+		printer1.printOff();
+		assertEquals("A page has been printed off", printer1.printOff());
+		assertEquals(4, printer1.getCount());
+	}
 }
