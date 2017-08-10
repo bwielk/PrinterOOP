@@ -1,5 +1,6 @@
 package printers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class InkjetPrinter extends Printer {
@@ -34,5 +35,16 @@ public class InkjetPrinter extends Printer {
 		String yellow = (cartridges.containsKey(CMYK.YELLOW))? "" + cartridges.get(CMYK.YELLOW).getLevel() + "": "n/a";
 		String key = (cartridges.containsKey(CMYK.KEY))? "" + cartridges.get(CMYK.KEY).getLevel() + "": "n/a";
 		return "Ink levels : CYAN: " + cyan + " MAGENTA: " + magenta + " YELLOW: " + yellow + " KEY: " + key + "";
+	}
+
+	public String lowLevel() {
+		ArrayList<String> report = new ArrayList<String>();
+		for(Cartridge cartridge : cartridges.values()){
+			if(cartridge.getLevel() <= (double) 20.0){
+				report.add(cartridge.getColor().toString());
+			}
+		}
+		String summary = String.join(", ", report);
+		return "ATTENTION! The levels of inks: " + summary + " are low!";
 	}
 }

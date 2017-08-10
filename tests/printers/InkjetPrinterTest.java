@@ -13,6 +13,17 @@ public class InkjetPrinterTest {
 	private Cartridge cartridge3;
 	private Cartridge cartridge4;
 	
+	private void cartridgesIn(double a, double b, double c, double d){
+		cartridge1.setLevel(a);
+		cartridge2.setLevel(b);
+		cartridge3.setLevel(c);
+		cartridge4.setLevel(d);
+		printer1.acceptCartridge(cartridge1);
+		printer1.acceptCartridge(cartridge2);
+		printer1.acceptCartridge(cartridge3);
+		printer1.acceptCartridge(cartridge4);
+	}
+	
 	@Before
 	public void test() {
 		printer1 = new InkjetPrinter("HP", "443", 200); 
@@ -48,10 +59,29 @@ public class InkjetPrinterTest {
 	
 	@Test
 	public void checksInkLevels(){
-		cartridge1.setLevel(20.0);
+		cartridge1.setLevel(30.0);
 		cartridge2.setLevel(30.0);
 		printer1.acceptCartridge(cartridge1);
 		printer1.acceptCartridge(cartridge2);
-		assertEquals("Ink levels : CYAN: 20.0 MAGENTA: 30.0 YELLOW: n/a KEY: n/a", printer1.inkReport());
+		assertEquals("Ink levels : CYAN: 30.0 MAGENTA: 30.0 YELLOW: n/a KEY: n/a", printer1.inkReport());
 	}
+	
+	@Test
+	public void notifiesOnLowLevels(){
+		cartridgesIn(10.0, 20.0, 10.0, 20.0);
+		assertEquals("ATTENTION! The levels of inks: YELLOW, CYAN, KEY, MAGENTA are low!", printer1.lowLevel());
+	}
+	
+	@Test
+	public void notifiesOnLowLevels2(){
+		cartridgesIn(10.0, 20.0, 10.0, 30.0);
+		assertEquals("ATTENTION! The levels of inks: YELLOW, CYAN, MAGENTA are low!", printer1.lowLevel());
+	}
+	
+	@Test
+	public void notifiesOnLowLevels3(){
+		cartridgesIn(90.0, 20.0, 90.0, 90.0);
+		assertEquals("ATTENTION! The levels of inks: MAGENTA are low!", printer1.lowLevel());
+	}
+	
 }
