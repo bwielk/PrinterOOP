@@ -30,11 +30,11 @@ public class InkjetPrinter extends Printer {
 	}
 	
 	public String inkReport(){
-		String cyan = (cartridges.containsKey(CMYK.CYAN))? "" + cartridges.get(CMYK.CYAN).getLevel() + "": "n/a";
-		String magenta = (cartridges.containsKey(CMYK.MAGENTA))? "" + cartridges.get(CMYK.MAGENTA).getLevel() + "": "n/a";
-		String yellow = (cartridges.containsKey(CMYK.YELLOW))? "" + cartridges.get(CMYK.YELLOW).getLevel() + "": "n/a";
-		String key = (cartridges.containsKey(CMYK.KEY))? "" + cartridges.get(CMYK.KEY).getLevel() + "": "n/a";
-		return "Ink levels : CYAN: " + cyan + " MAGENTA: " + magenta + " YELLOW: " + yellow + " KEY: " + key + "";
+		String cyan = (cartridges.containsKey(CMYK.CYAN))? "" + cartridges.get(CMYK.CYAN).getLevel() + " %": "n/a";
+		String magenta = (cartridges.containsKey(CMYK.MAGENTA))? "" + cartridges.get(CMYK.MAGENTA).getLevel() + " %": "n/a";
+		String yellow = (cartridges.containsKey(CMYK.YELLOW))? "" + cartridges.get(CMYK.YELLOW).getLevel() + " %": "n/a";
+		String key = (cartridges.containsKey(CMYK.KEY))? "" + cartridges.get(CMYK.KEY).getLevel() + " %": "n/a";
+		return "Ink levels : \nCYAN: " + cyan + " \nMAGENTA: " + magenta + " \nYELLOW: " + yellow + " \nKEY(BLACK): " + key + "";
 	}
 
 	public String lowLevel() {
@@ -56,4 +56,6 @@ public class InkjetPrinter extends Printer {
 		}
 		return true;
 	}
+	
+	
 }

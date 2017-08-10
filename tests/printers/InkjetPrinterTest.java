@@ -12,6 +12,8 @@ public class InkjetPrinterTest {
 	private Cartridge cartridge2;
 	private Cartridge cartridge3;
 	private Cartridge cartridge4;
+	private Paper sheet1;
+	private Paper sheet2;
 	
 	private void cartridgesIn(double a, double b, double c, double d){
 		cartridge1.setLevel(a);
@@ -31,6 +33,8 @@ public class InkjetPrinterTest {
 		cartridge2 = new Cartridge(CMYK.MAGENTA);
 		cartridge3 = new Cartridge(CMYK.YELLOW);
 		cartridge4 = new Cartridge(CMYK.KEY);
+		sheet1 = new Paper(PaperType.MATT);
+		sheet2 = new Paper(PaperType.LIGHTWEIGHT);
 	}
 	
 	@Test
@@ -63,13 +67,14 @@ public class InkjetPrinterTest {
 		cartridge2.setLevel(30.0);
 		printer1.acceptCartridge(cartridge1);
 		printer1.acceptCartridge(cartridge2);
-		assertEquals("Ink levels : CYAN: 30.0 MAGENTA: 30.0 YELLOW: n/a KEY: n/a", printer1.inkReport());
+		assertEquals("Ink levels : \nCYAN: 30.0 % \nMAGENTA: 30.0 % \nYELLOW: n/a \nKEY(BLACK): n/a", printer1.inkReport());
+		System.out.println(printer1.inkReport());
 	}
 	
 	@Test
 	public void notifiesOnLowLevels(){
 		cartridgesIn(10.0, 20.0, 10.0, 20.0);
-		assertEquals("ATTENTION! The levels of inks: YELLOW, CYAN, KEY, MAGENTA are low!", printer1.lowLevel());
+		assertEquals("ATTENTION! The levels of inks: YELLOW, CYAN, MAGENTA, KEY are low!", printer1.lowLevel());
 	}
 	
 	@Test
@@ -94,6 +99,38 @@ public class InkjetPrinterTest {
 	public void areCartridgesFull2(){
 		cartridgesIn(100.0, 210.0, 30.0, 21.0);
 		assertEquals(true, printer1.cartridgesFull());
+	}
+	
+	@Test //if inherits
+	public void doesNotPrintIfNoPaper() {
+		printer1.addPaper(sheet1);
+		printer1.addPaper(sheet2);
+		printer1.switchON();
+		printer1.printOff();
+		printer1.printOff();
+		assertEquals("No paper", printer1.printOff());
+		assertEquals(2, printer1.getCount());
+	}
+
+	@Test //if inherits
+	public void doesPrintIfPaperIn() {
+		printer1.addPaper(sheet1);
+		printer1.addPaper(sheet2);
+		printer1.addPaper(sheet1);
+		printer1.addPaper(sheet2);
+		printer1.switchON();
+		printer1.printOff();
+		printer1.printOff();
+		printer1.printOff();
+		assertEquals("A page has been printed off", printer1.printOff());
+		assertEquals(4, printer1.getCount());
+	}
+
+	@Test //if inherits
+	public void doesntPrintOffIfSwitchedOff() {
+		printer1.addPaper(sheet1);
+		printer1.switchOFF();
+		assertEquals("The printer is OFF. Switch it on", printer1.printOff());
 	}
 	
 }
