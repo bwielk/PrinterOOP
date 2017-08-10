@@ -4,7 +4,7 @@ public enum PaperType {
 
 	SATIN(1), 
 	CAST(2), 
-	LIGHTWRIGHT(3), 
+	LIGHTWEIGHT(3), 
 	MATT(4), 
 	REGULAR(5);
 

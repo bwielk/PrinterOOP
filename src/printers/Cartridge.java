@@ -25,7 +25,6 @@ public class Cartridge {
 		}else{
 			return "The value is too high";
 		}
-		return "Level updated to the value of " + value
-				;
+		return "Level updated to the value of " + value + "";
 	}
 }

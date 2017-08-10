@@ -2,18 +2,17 @@ package printers;
 
 public enum Resolution {
 	
-	HIGH(3),
-	MEDIUM(2),
-	LOW(1);
+	HIGH(300),
+	MEDIUM(200),
+	LOW(100);
 	
-	private int inkUseRate;
+	private int dpi;
 	
-	Resolution(int inkUseRate){
-		this.inkUseRate = inkUseRate;
+	Resolution(int dpi){
+		this.dpi = dpi;
 	}
 
 	public int getInkUseRate() {
-		return inkUseRate;
+		return dpi;
 	}
-	
 }

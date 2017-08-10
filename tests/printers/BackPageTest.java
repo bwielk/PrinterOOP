@@ -11,7 +11,7 @@ public class BackPageTest{
 	
 	@Before
 	public void before(){
-		sheet1 = new Paper();
+		sheet1 = new Paper(PaperType.MATT);
 	}
 	
 	@Test

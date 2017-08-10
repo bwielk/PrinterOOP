@@ -16,8 +16,8 @@ public class PrinterTest {
 	public void before() {
 		printer1 = new Printer("Dell", "1234", 100);
 		printer2 = new Printer("HP", "x434", 123);
-		sheet1 = new Paper();
-		sheet2 = new Paper();
+		sheet1 = new Paper(PaperType.MATT);
+		sheet2 = new Paper(PaperType.REGULAR);
 	}
 
 	@Test

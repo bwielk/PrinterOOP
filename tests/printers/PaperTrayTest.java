@@ -19,10 +19,10 @@ public class PaperTrayTest {
 		printer1 = new Printer("Toshiba", "0008", 100);
 		printer1.switchON();
 		paperTray = new PaperTray(100);
-		sheet1 = new Paper();
-		sheet2 = new Paper();
-		sheet3 = new Paper();
-		sheet4 = new Paper();
+		sheet1 = new Paper(PaperType.MATT);
+		sheet2 = new Paper(PaperType.REGULAR);
+		sheet3 = new Paper(PaperType.SATIN);
+		sheet4 = new Paper(PaperType.MATT);
 	}
 
 	@Test
