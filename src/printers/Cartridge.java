@@ -17,4 +17,9 @@ public class Cartridge {
 	public double getLevel(){
 		return level;
 	}
+	
+	//helper testing method
+	public void setLevel(double value){
+		this.level = value;
+	}
 }
