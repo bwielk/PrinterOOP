@@ -20,10 +20,6 @@ public class Printer {
 		return brand;
 	}
 
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
-
 	public String getModel() {
 		return model;
 	}
@@ -36,16 +32,8 @@ public class Printer {
 		return count;
 	}
 
-	public void setCount(int count) {
-		this.count = count;
-	}
-
 	public PaperTray getPaperTray() {
 		return paperTray;
-	}
-
-	public void setPaperTray(PaperTray paperTray) {
-		this.paperTray = paperTray;
 	}
 
 	public boolean isOn() {
@@ -59,7 +47,8 @@ public class Printer {
 	public void switchOFF() {
 		this.statusON = false;
 	}
-
+	
+	//mainly used for quicker testing(helper method)
 	public void addPaper(Paper sheet) {
 		getPaperTray().addPaper(sheet);
 	}
