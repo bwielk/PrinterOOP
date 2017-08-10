@@ -20,11 +20,12 @@ public class Cartridge {
 	
 	//helper testing method
 	public String setLevel(double value){
-		if(value <= 100){
+		if(value <= (double) 100){
 			this.level = value;
 		}else{
 			return "The value is too high";
 		}
-		return "Level updated to the value of " + value;
+		return "Level updated to the value of " + value
+				;
 	}
 }
