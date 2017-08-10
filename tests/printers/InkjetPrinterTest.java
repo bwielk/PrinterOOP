@@ -84,4 +84,16 @@ public class InkjetPrinterTest {
 		assertEquals("ATTENTION! The levels of inks: MAGENTA are low!", printer1.lowLevel());
 	}
 	
+	@Test
+	public void areCartridgesFull(){
+		cartridgesIn(20.0, 34.0, 100.0, 100.0);
+		assertEquals(false, printer1.cartridgesFull());
+	}
+	
+	@Test
+	public void areCartridgesFull2(){
+		cartridgesIn(100.0, 210.0, 30.0, 21.0);
+		assertEquals(true, printer1.cartridgesFull());
+	}
+	
 }

@@ -47,4 +47,13 @@ public class InkjetPrinter extends Printer {
 		String summary = String.join(", ", report);
 		return "ATTENTION! The levels of inks: " + summary + " are low!";
 	}
+	
+	public boolean cartridgesFull(){
+		for(Cartridge cartridge : cartridges.values()){
+			if(cartridge.getLevel() <= (double) 20.0){
+				return false;
+			}
+		}
+		return true;
+	}
 }

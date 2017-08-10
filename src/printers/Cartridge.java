@@ -19,7 +19,12 @@ public class Cartridge {
 	}
 	
 	//helper testing method
-	public void setLevel(double value){
-		this.level = value;
+	public String setLevel(double value){
+		if(value <= 100){
+			this.level = value;
+		}else{
+			return "The value is too high";
+		}
+		return "Level updated to the value of " + value;
 	}
 }
