@@ -36,9 +36,7 @@ public class PaperTest extends Paper {
 		Paper paper101 = new Paper();
 		System.out.println(printer1.getPaperTray().paperInTheTray());
 		String notification = printer1.getPaperTray().addPaper(paper101);
-		System.out.println(printer1.getPaperTray().paperInTheTray()); // still
-																		// displays
-																		// 100(maximum)
+		System.out.println(printer1.getPaperTray().paperInTheTray()); // still displays 100(maximum)
 		assertEquals("Cannot be added. The tray is full", notification);
 	}
 }
