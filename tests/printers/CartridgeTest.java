@@ -7,11 +7,11 @@ import org.junit.Test;
 
 public class CartridgeTest{
 	
-	private Cartridge cartridge;
+	private InkCartridge cartridge;
 	
 	@Before
 	public void before(){
-		cartridge = new Cartridge(CMYK.CYAN);
+		cartridge = new InkCartridge(CMYK.CYAN);
 	}
 	
 	@Test

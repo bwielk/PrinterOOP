@@ -4,9 +4,9 @@ public class Printer {
 
 	private String brand;
 	private String model;
-	private int count;
+	protected int count;
 	private PaperTray paperTray;
-	private boolean statusON;
+	protected boolean statusON;
 
 	public Printer(String brand, String model, int limit) {
 		this.brand = brand;

@@ -8,10 +8,10 @@ import org.junit.Test;
 public class InkjetPrinterTest {
 	
 	private InkjetPrinter printer1;
-	private Cartridge cartridge1;
-	private Cartridge cartridge2;
-	private Cartridge cartridge3;
-	private Cartridge cartridge4;
+	private InkCartridge cartridge1;
+	private InkCartridge cartridge2;
+	private InkCartridge cartridge3;
+	private InkCartridge cartridge4;
 	private Paper sheet1;
 	private Paper sheet2;
 	
@@ -29,10 +29,10 @@ public class InkjetPrinterTest {
 	@Before
 	public void test() {
 		printer1 = new InkjetPrinter("HP", "443", 200); 
-		cartridge1 = new Cartridge(CMYK.CYAN);
-		cartridge2 = new Cartridge(CMYK.MAGENTA);
-		cartridge3 = new Cartridge(CMYK.YELLOW);
-		cartridge4 = new Cartridge(CMYK.KEY);
+		cartridge1 = new InkCartridge(CMYK.CYAN);
+		cartridge2 = new InkCartridge(CMYK.MAGENTA);
+		cartridge3 = new InkCartridge(CMYK.YELLOW);
+		cartridge4 = new InkCartridge(CMYK.KEY);
 		sheet1 = new Paper(PaperType.MATT);
 		sheet2 = new Paper(PaperType.LIGHTWEIGHT);
 	}

@@ -5,18 +5,18 @@ import java.util.HashMap;
 
 public class InkjetPrinter extends Printer {
 	
-	private HashMap<CMYK, Cartridge> cartridges;
+	private HashMap<CMYK, InkCartridge> cartridges;
 
 	public InkjetPrinter(String brand, String model, int limit) {
 		super(brand, model, limit);
-		this.cartridges = new HashMap<CMYK, Cartridge>();
+		this.cartridges = new HashMap<CMYK, InkCartridge>();
 	}
 	
 	public HashMap getCartridges(){
 		return this.cartridges;
 	}
 	
-	public String acceptCartridge(Cartridge cartridge){
+	public String acceptCartridge(InkCartridge cartridge){
 		if(cartridges.containsKey(cartridge.getColor())){
 			return "The " + cartridge.getColor() + " cartridge is already in";
 		}else{
@@ -39,7 +39,7 @@ public class InkjetPrinter extends Printer {
 
 	public String lowLevel() {
 		ArrayList<String> report = new ArrayList<String>();
-		for(Cartridge cartridge : cartridges.values()){
+		for(InkCartridge cartridge : cartridges.values()){
 			if(cartridge.getLevel() <= (double) 20.0){
 				report.add(cartridge.getColor().toString());
 			}
@@ -49,7 +49,7 @@ public class InkjetPrinter extends Printer {
 	}
 	
 	public boolean cartridgesFull(){
-		for(Cartridge cartridge : cartridges.values()){
+		for(InkCartridge cartridge : cartridges.values()){
 			if(cartridge.getLevel() <= (double) 20.0){
 				return false;
 			}
@@ -57,5 +57,19 @@ public class InkjetPrinter extends Printer {
 		return true;
 	}
 	
-	
+	@Override
+	public String printOff() {
+		if (this.statusON == true) {
+			if (getPaperTray().paperInTheTray() > 0) {
+				int sheetsIn = getPaperTray().getTray().size();
+				getPaperTray().getTray().remove(sheetsIn - 1);
+				this.count += 1;
+				return "A page has been printed off";
+			} else {
+				return "No paper";
+			}
+		} else {
+			return "The printer is OFF. Switch it on";
+		}
+	}
 }
