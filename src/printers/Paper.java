@@ -26,4 +26,20 @@ public class Paper {
 	public int getAbsorption(){
 		return type.getAbsorption();
 	}
+	
+	public String getContentFront(){
+		return this.front.getContent();
+	}
+	
+	public String getContentBack(){
+		return this.back.getContent();
+	}
+	
+	public void writeContentFront(String content){
+		this.front.writeContent(content);
+	}
+	
+	public void writeContentBack(String content){
+		this.back.writeContent(content);
+	}
 }

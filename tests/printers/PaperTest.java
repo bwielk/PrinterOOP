@@ -10,6 +10,8 @@ public class PaperTest{
 	private Printer printer1;
 	private Paper sheet1;
 	private Paper sheet2;
+	private String content1;
+	private String content2;
 
 	@Before
 	public void before() {
@@ -17,6 +19,8 @@ public class PaperTest{
 		printer1.switchON();
 		sheet1 = new Paper(PaperType.MATT);
 		sheet2 = new Paper(PaperType.CAST);
+		content1 = "ABCDEFG11";
+		content2 = "JKLMNOPdd";
 	}
 
 	@Test
@@ -44,5 +48,13 @@ public class PaperTest{
 	public void canGetPaperAbsorptionRate(){
 		assertEquals(4, sheet1.getAbsorption());
 		assertEquals(2, sheet2.getAbsorption());
+	}
+	
+	@Test
+	public void canReceiveContent(){
+		sheet1.writeContentFront(content1);
+		sheet1.writeContentBack(content2);
+		assertEquals(content1, sheet1.getContentFront());
+		assertEquals(content2, sheet1.getContentBack());
 	}
 }
