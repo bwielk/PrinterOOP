@@ -28,11 +28,11 @@ public class Paper {
 	}
 	
 	public String getContentFront(){
-		return this.front.getContent();
+		return getFrontPage().getContent();
 	}
 	
 	public String getContentBack(){
-		return this.back.getContent();
+		return getBackPage().getContent();
 	}
 	
 	public void writeContentFront(String content){
