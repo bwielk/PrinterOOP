@@ -37,12 +37,12 @@ public class LaserPrinter extends Printer{
 	public String lowLevel() {
 		ArrayList<String> report = new ArrayList<String>();
 		for(LaserCartridge cartridge : cartridges.values()){
-			if(cartridge.getLevel() <= (double) 20.0){
+			if(cartridge.getLevel()/200.0*100.0 <= (double) 20.0){
 				report.add(cartridge.getColor().toString());
 			}
 		}
 		String summary = String.join(", ", report);
-		return "ATTENTION! The levels of inks: " + summary + " are low!";
+		return "ATTENTION! The levels of toners: " + summary + " are low!";
 	}
 	
 	@Override

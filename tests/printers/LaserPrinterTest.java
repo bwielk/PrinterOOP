@@ -58,7 +58,7 @@ public class LaserPrinterTest{
 	public void checksTonerLevels(){
 		cartridgesIn(80.0, 100.00, 140.0, 160.0);
 		assertEquals("Toner levels : \nCYAN: 40.0 % \nMAGENTA: 50.0 % \nYELLOW: 70.0 % \nKEY(BLACK): 80.0 %", printer1.tonerReport());
-		System.out.println(printer1.tonerReport());
+		//System.out.println(printer1.tonerReport());
 	}
 	
 	@Test
@@ -71,5 +71,11 @@ public class LaserPrinterTest{
 		System.out.println(printer1.tonerReport());
 	}
 	
+	@Test
+	public void checksTonerLowLevels(){
+		cartridgesIn(100.0, 120.00, 20.0, 20.0);
+		assertEquals("ATTENTION! The levels of toners: YELLOW, KEY are low!", printer1.lowLevel());
+		System.out.println(printer1.lowLevel());
+	}
 	
 }
