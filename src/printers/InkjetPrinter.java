@@ -68,15 +68,17 @@ public class InkjetPrinter extends Printer {
 	}
 	
 	public String printOff(PrintingSession session) {
+		int numOfSheets = session.getNumOfSheetsNeeded();
 		if (this.statusON == true) {
-			if (getPaperTray().paperInTheTray() > 0) {
+			if (getPaperTray().paperInTheTray() > 0 && numOfSheets < getPaperTray().paperInTheTray()) {
 				setLastFile(session);
 				int sheetsIn = getPaperTray().getTray().size();
+				
 				getPaperTray().getTray().remove(sheetsIn - 1);
 				this.count += 1;
-				return "A page has been printed off";
+				return "The process is complete";
 			} else {
-				return "No paper";
+				return "Not enough paper";
 			}
 		} else {
 			return "The printer is OFF. Switch it on";

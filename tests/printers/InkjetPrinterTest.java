@@ -157,5 +157,22 @@ public class InkjetPrinterTest {
 		assertEquals(780, content.length());
 	}
 	
+	@Test
+	public void cannotPrintIfNotEnoughPaper(){
+		for(int i=0; i<10; i++){
+			printer1.addPaper(sheet1);
+		}
+		printer1.switchON();
+		assertEquals("Not enough paper", printer1.printOff(session));
+	}
 	
+	@Test
+	public void canPrintOffIfEnoughPaper(){
+		for(int i=0; i<12; i++){
+			printer1.addPaper(sheet1);
+		}
+		printer1.switchON();
+		assertEquals("The process is complete", printer1.printOff(session));
+		assertEquals(1, printer1.paperInTheTray());
+	}
 }

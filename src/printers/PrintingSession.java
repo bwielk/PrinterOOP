@@ -27,4 +27,9 @@ public class PrintingSession{
 	public PrintingMode getMode(){
 		return this.mode;
 	}
+	
+	public int getNumOfSheetsNeeded(){
+		int num = (getPages()%2 == 1) ? getPages()/2 + 1 : getPages()/2;
+		return num;
+	}
 }
