@@ -71,7 +71,6 @@ public class InkjetPrinter extends Printer {
 	public String printOff(PrintingSession session) {
 		ArrayList<String> pagesContent = new ArrayList<String>();
 		int numOfSheets = session.getNumOfSheetsNeeded();
-		session.getContent().
 		if (this.statusON == true) {
 			if (getPaperTray().paperInTheTray() > 0 && numOfSheets < getPaperTray().paperInTheTray()) {
 				setLastFile(session);

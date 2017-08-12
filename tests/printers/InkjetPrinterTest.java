@@ -43,7 +43,7 @@ public class InkjetPrinterTest {
 		cartridge4 = new InkCartridge(CMYK.KEY);
 		sheet1 = new Paper(PaperType.MATT);
 		sheet2 = new Paper(PaperType.LIGHTWEIGHT);
-		session = new PrintingSession(21, content, PrintingMode.GRAYSCALE);
+		session = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A4);
 	}
 	
 	@Test

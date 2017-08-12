@@ -7,27 +7,29 @@ public class PrintingSession{
 	private PrintingMode mode;
 	private PaperSize size;
 
-	public PrintingSession(int pages, String content, PrintingMode mode, PaperSize size) {
-		this.pages = pages;
+	public PrintingSession(String content, PrintingMode mode, PaperSize size) {
+		this.pages = getNumOfPages();
 		this.content = content;
 		this.mode = mode;
 		this.size = size;
 	}
 
 	public int getPages() {
-		return pages;
+		return getNumOfPages();
 	}
 
-	public void setPages(int pages) {
-		this.pages = pages;
-	}
-	
 	public String getContent(){
 		return this.content;
 	}
 	
 	public PrintingMode getMode(){
 		return this.mode;
+	}
+	
+	public int getNumOfPages(){
+		int numOfCharsInString = this.content.length();
+		int result = (numOfCharsInString % this.size.getCapacity() != 0) ? numOfCharsInString%this.size.getCapacity() + 1 : numOfCharsInString%this.size.getCapacity()  ;
+		return result;
 	}
 	
 	public int getNumOfSheetsNeeded(){
