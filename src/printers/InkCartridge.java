@@ -17,9 +17,9 @@ public class InkCartridge extends Cartridge {
 	public String setLevel(double value){
 		if(value <= (double) 100){
 			this.level = value;
+			return "Level updated to the value of " + value + "";
 		}else{
 			return "The value is too high";
-		}
-		return "Level updated to the value of " + value + "";
+		}	
 	}
 }
