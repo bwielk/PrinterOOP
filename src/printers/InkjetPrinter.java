@@ -6,16 +6,26 @@ import java.util.HashMap;
 public class InkjetPrinter extends Printer {
 	
 	private HashMap<CMYK, InkCartridge> cartridges;
+	private PrintingSession file;
 
 	public InkjetPrinter(String brand, String model, int limit) {
 		super(brand, model, limit);
 		this.cartridges = new HashMap<CMYK, InkCartridge>();
+		this.file = null;
 	}
 	
 	public HashMap getCartridges(){
 		return this.cartridges;
 	}
 	
+	public PrintingSession getLastFile() {
+		return file;
+	}
+
+	public void setLastFile(PrintingSession file) {
+		this.file = file;
+	}
+
 	public String acceptCartridge(InkCartridge cartridge){
 		if(cartridges.containsKey(cartridge.getColor())){
 			return "The " + cartridge.getColor() + " cartridge is already in";
@@ -57,10 +67,10 @@ public class InkjetPrinter extends Printer {
 		return true;
 	}
 	
-	@Override
-	public String printOff() {
+	public String printOff(PrintingSession session) {
 		if (this.statusON == true) {
 			if (getPaperTray().paperInTheTray() > 0) {
+				setLastFile(session);
 				int sheetsIn = getPaperTray().getTray().size();
 				getPaperTray().getTray().remove(sheetsIn - 1);
 				this.count += 1;

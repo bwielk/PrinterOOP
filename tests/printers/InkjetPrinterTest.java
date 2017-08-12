@@ -14,6 +14,8 @@ public class InkjetPrinterTest {
 	private InkCartridge cartridge4;
 	private Paper sheet1;
 	private Paper sheet2;
+	private PrintingSession session;
+	private String content;
 	
 	private void cartridgesIn(double a, double b, double c, double d){
 		cartridge1.setLevel(a);
@@ -24,10 +26,16 @@ public class InkjetPrinterTest {
 		printer1.acceptCartridge(cartridge2);
 		printer1.acceptCartridge(cartridge3);
 		printer1.acceptCartridge(cartridge4);
+		
 	}
 	
 	@Before
 	public void test() {
+		content = "";
+		for(int i=0; i<20; i++){
+			String sample = "Sjdnfjdnbfjdsbfkdbsksjabdbdkdafbfvvsdfd";
+			content += sample;
+		}
 		printer1 = new InkjetPrinter("HP", "443", 200); 
 		cartridge1 = new InkCartridge(CMYK.CYAN);
 		cartridge2 = new InkCartridge(CMYK.MAGENTA);
@@ -35,6 +43,7 @@ public class InkjetPrinterTest {
 		cartridge4 = new InkCartridge(CMYK.KEY);
 		sheet1 = new Paper(PaperType.MATT);
 		sheet2 = new Paper(PaperType.LIGHTWEIGHT);
+		session = new PrintingSession(21, content, PrintingMode.GRAYSCALE);
 	}
 	
 	@Test
@@ -132,5 +141,21 @@ public class InkjetPrinterTest {
 		printer1.switchOFF();
 		assertEquals("The printer is OFF. Switch it on", printer1.printOff());
 	}
+	
+	@Test
+	public void canRememberTheLastPrintedFile(){
+		for(int i=0; i<30; i++){
+			printer1.addPaper(sheet1);
+		}
+		printer1.switchON();
+		printer1.printOff(session);
+		assertEquals(21, printer1.getLastFile().getPages());
+	}
+	
+	@Test
+	public void canCountTheNumberOfChars(){
+		assertEquals(780, content.length());
+	}
+	
 	
 }
