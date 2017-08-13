@@ -41,8 +41,8 @@ public class InkjetPrinterTest {
 		cartridge2 = new InkCartridge(CMYK.MAGENTA);
 		cartridge3 = new InkCartridge(CMYK.YELLOW);
 		cartridge4 = new InkCartridge(CMYK.KEY);
-		sheet1 = new Paper(PaperType.MATT);
-		sheet2 = new Paper(PaperType.LIGHTWEIGHT);
+		sheet1 = new Paper(PaperType.MATT, PaperSize.A4);
+		sheet2 = new Paper(PaperType.LIGHTWEIGHT, PaperSize.A5);
 		session = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A4);
 	}
 	
@@ -83,13 +83,21 @@ public class InkjetPrinterTest {
 	@Test
 	public void notifiesOnLowLevels(){
 		cartridgesIn(10.0, 20.0, 10.0, 20.0);
-		assertEquals("ATTENTION! The levels of inks: YELLOW, CYAN, MAGENTA, KEY are low!", printer1.lowLevel());
+		String result = printer1.lowLevel();
+		assertEquals(true, result.contains("YELLOW"));
+		assertEquals(true, result.contains("CYAN"));
+		assertEquals(true, result.contains("MAGENTA"));
+		assertEquals(true, result.contains("KEY"));
 	}
 	
 	@Test
 	public void notifiesOnLowLevels2(){
 		cartridgesIn(10.0, 20.0, 10.0, 30.0);
-		assertEquals("ATTENTION! The levels of inks: YELLOW, CYAN, MAGENTA are low!", printer1.lowLevel());
+		String result = printer1.lowLevel();
+		assertEquals(true, result.contains("YELLOW"));
+		assertEquals(true, result.contains("CYAN"));
+		assertEquals(true, result.contains("MAGENTA"));
+		assertEquals(false, result.contains("KEY"));
 	}
 	
 	@Test
@@ -149,7 +157,7 @@ public class InkjetPrinterTest {
 		}
 		printer1.switchON();
 		printer1.printOff(session);
-		assertEquals(21, printer1.getLastFile().getPages());
+		assertEquals(16, printer1.getLastFile().getPages());
 	}
 	
 	@Test

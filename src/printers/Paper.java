@@ -5,11 +5,13 @@ public class Paper {
 	private FrontPage front;
 	private BackPage back;
 	private PaperType type;
+	private PaperSize size;
 	
-	public Paper(PaperType type){
+	public Paper(PaperType type, PaperSize size){
 		this.front = new FrontPage();
 		this.back = new BackPage();
 		this.type = type;
+		this.size = size;
 	}
 	
 	public FrontPage getFrontPage() {
@@ -41,5 +43,9 @@ public class Paper {
 	
 	public void writeContentBack(String content){
 		this.back.writeContent(content);
+	}
+	
+	public PaperSize getSize(){
+		return size;
 	}
 }
