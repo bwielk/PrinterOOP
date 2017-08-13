@@ -20,7 +20,6 @@ public class PrintingSessionTest {
 		session3 = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A5);
 	}
 	
-	
 	@Test
 	public void containsContent(){
 		assertEquals(content, session.getContent());
@@ -33,16 +32,16 @@ public class PrintingSessionTest {
 	
 	@Test
 	public void canGenerateNumOfPagesByContent(){
-		assertEquals(2, session.getNumOfPages());
-		assertEquals(3, session2.getNumOfPages());
-		assertEquals(6, session3.getNumOfPages());
+		System.out.println(session3.getContent().length()%session3.getSize().getCapacity());
+		assertEquals(2, session.getPages());
+		assertEquals(3, session2.getPages());
+		assertEquals(11, session3.getPages());
 	}
 	
 	@Test
-	public void canDefineNumOfPagesForPrinting(){
+	public void canDefineNumOfSheetsForPrinting(){
 		assertEquals(1, session.getNumOfSheetsNeeded());
 		assertEquals(2, session2.getNumOfSheetsNeeded());
 		assertEquals(6, session3.getNumOfSheetsNeeded());
 	}
-
 }
