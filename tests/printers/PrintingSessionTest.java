@@ -32,7 +32,7 @@ public class PrintingSessionTest {
 	
 	@Test
 	public void canGenerateNumOfPagesByContent(){
-		System.out.println(session3.getContent().length()%session3.getSize().getCapacity());
+		//System.out.println(session3.getContent().length()%session3.getSize().getCapacity());
 		assertEquals(2, session.getPages());
 		assertEquals(3, session2.getPages());
 		assertEquals(11, session3.getPages());
@@ -43,5 +43,14 @@ public class PrintingSessionTest {
 		assertEquals(1, session.getNumOfSheetsNeeded());
 		assertEquals(2, session2.getNumOfSheetsNeeded());
 		assertEquals(6, session3.getNumOfSheetsNeeded());
+	}
+	
+	@Test
+	public void canDivideContentByPagesCapacity(){
+		assertEquals(11, session3.splitContentIntoPages().size());
+		assertEquals(3, session2.splitContentIntoPages().size());
+		//System.out.println(session.splitContentIntoPages().get(0));
+		//assertEquals(2, session.pageSplit().length());
+		//assertEquals("yz", session.getContentByPage(2));
 	}
 }
