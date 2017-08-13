@@ -58,9 +58,11 @@ public class PrintingSession{
 			}else{
 				this.pagesContent.add(getContent().substring(startPosition));
 			}
-			System.out.println(startPosition);
-			System.out.println(this.pagesContent);
 		}
 		return this.pagesContent;
+	}
+	
+	public String getContentByPage(int pageNum){
+		return this.pagesContent.get(pageNum-1);
 	}
 }

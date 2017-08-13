@@ -47,10 +47,9 @@ public class PrintingSessionTest {
 	
 	@Test
 	public void canDivideContentByPagesCapacity(){
+		assertEquals(2, session.splitContentIntoPages().size());
 		assertEquals(11, session3.splitContentIntoPages().size());
 		assertEquals(3, session2.splitContentIntoPages().size());
-		//System.out.println(session.splitContentIntoPages().get(0));
-		//assertEquals(2, session.pageSplit().length());
-		//assertEquals("yz", session.getContentByPage(2));
+		assertEquals("yz", session.getContentByPage(2));
 	}
 }
