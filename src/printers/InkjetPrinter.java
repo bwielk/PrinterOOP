@@ -74,11 +74,11 @@ public class InkjetPrinter extends Printer {
 	
 	public String printOff(PrintingSession session) {
 		int numOfSheets = session.getNumOfSheetsNeeded();
-		System.out.println("SHEEETS : " + numOfSheets);
+		System.out.println("NEW SESSION: SHEEETS : " + numOfSheets);
 		if (this.statusON == true){
 			if (getPaperTray().paperInTheTray() > 0 && numOfSheets <= getPaperTray().paperInTheTray()) {
 				int indexOfContent = 0;
-				for(int i=0; i<=numOfSheets; i++){
+				for(int i=0; i<numOfSheets; i++){
 					indexOfContent++;
 					Paper sheetToPrint = getPaperTray().getTray().remove(0);
 					sheetToPrint.getFrontPage().writeContent(session.getContentByPage(indexOfContent));
@@ -86,7 +86,6 @@ public class InkjetPrinter extends Printer {
 					sheetToPrint.getBackPage().writeContent(session.getContentByPage(indexOfContent));
 					this.output.add(sheetToPrint);
 					this.count += indexOfContent;
-					System.out.println("Paper in the tray: " + getPaperTray().getTray().size());
 					setLastFile(session);
 					if(getPaperTray().paperInTheTray() == getPaperTray().paperInTheTray()- numOfSheets){
 						break;
