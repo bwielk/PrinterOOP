@@ -9,12 +9,14 @@ public class PrintingSession{
 	private PrintingMode mode;
 	private PaperSize size;
 	private ArrayList<String> pagesContent;
+	private boolean duplex;
 	
 
-	public PrintingSession(String content, PrintingMode mode, PaperSize size) {
+	public PrintingSession(String content, PrintingMode mode, PaperSize size, boolean duplex) {
 		this.content = content;
 		this.mode = mode;
 		this.size = size;
+		this.duplex = duplex;
 		this.pagesContent = new ArrayList<String>();
 		this.pages = setNumOfPages();
 		splitContentIntoPages();
@@ -43,8 +45,12 @@ public class PrintingSession{
 	}
 	
 	public int getNumOfSheetsNeeded(){
+		if(isDuplex() == true){
 		int num = (getPages()%2 == 1) ? getPages()/2 + 1 : getPages()/2;
 		return num;
+		}else{
+			return getPages();
+		}
 	}
 	
 	public ArrayList<String> splitContentIntoPages(){
@@ -66,4 +72,10 @@ public class PrintingSession{
 	public String getContentByPage(int pageNum){
 		return this.pagesContent.get(pageNum-1);
 	}
+
+	public boolean isDuplex() {
+		return duplex;
+	}
+	
+	
 }

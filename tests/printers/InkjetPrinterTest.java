@@ -15,7 +15,9 @@ public class InkjetPrinterTest {
 	private Paper sheet1;
 	private Paper sheet2;
 	private PrintingSession session;
+	private PrintingSession session2;
 	private String content;
+	private String content2;
 	
 	private void cartridgesIn(double a, double b, double c, double d){
 		cartridge1.setLevel(a);
@@ -36,6 +38,8 @@ public class InkjetPrinterTest {
 			String sample = "Sjdnfjdnbfjdsbfkdbsksjabdbdkdafbfvvsdfd";
 			content += sample;
 		}
+		
+		content2 = "QWERTQWERTPLKOIPLKOI";
 		printer1 = new InkjetPrinter("HP", "443", 200); 
 		cartridge1 = new InkCartridge(CMYK.CYAN);
 		cartridge2 = new InkCartridge(CMYK.MAGENTA);
@@ -43,7 +47,8 @@ public class InkjetPrinterTest {
 		cartridge4 = new InkCartridge(CMYK.KEY);
 		sheet1 = new Paper(PaperType.MATT, PaperSize.A4);
 		sheet2 = new Paper(PaperType.LIGHTWEIGHT, PaperSize.A5);
-		session = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A4);
+		session = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A4, true);
+		session2 = new PrintingSession(content2, PrintingMode.GRAYSCALE, PaperSize.A5, false);
 	}
 	
 	@Test
@@ -155,7 +160,7 @@ public class InkjetPrinterTest {
 			printer1.addPaper(sheet1);
 		}
 		printer1.switchON();
-		System.out.println("The file has pages " + session.getPages());
+		//System.out.println("The file has pages " + session.getPages());
 		printer1.printOff(session);
 		assertEquals(16, printer1.getLastFile().getPages());
 	}
@@ -174,13 +179,12 @@ public class InkjetPrinterTest {
 		System.out.println(session.getContentByPage(1));
 		System.out.println(session.getContentByPage(2));
 		System.out.println("Num of pages " + session.getPages());*/
-		System.out.println("sheets needed : " + session.getNumOfSheetsNeeded());
+		//System.out.println("sheets needed : " + session.getNumOfSheetsNeeded());
 		printer1.switchON();
 		assertEquals("Not enough paper", printer1.printOff(session));
 		printer1.addPaper(sheet1);
-		System.out.println("Paper in the tray " + printer1.paperInTheTray());
-		assertEquals("The process is complete", printer1.printOff(session));
-		
+		//System.out.println("Paper in the tray " + printer1.paperInTheTray());
+		assertEquals("The process is complete", printer1.printOff(session));	
 		assertEquals(0, printer1.paperInTheTray()); //PRINTING PROCESS
 	}
 	
@@ -192,5 +196,15 @@ public class InkjetPrinterTest {
 		printer1.switchON();
 		assertEquals("The process is complete", printer1.printOff(session));
 		assertEquals(4, printer1.paperInTheTray()); //PRINTING PROCESS
+	}
+	
+	@Test
+	public void canPrintOffWithoutDuplexOnA5(){
+		for(int i=0; i<3; i++){
+			printer1.addPaper(sheet2);
+		}
+		printer1.switchON();
+		assertEquals("The process is complete", printer1.printOff(session2));
+		assertEquals(1, printer1.paperInTheTray());
 	}
 }

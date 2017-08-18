@@ -12,7 +12,7 @@ public class BackPageTest{
 	
 	@Before
 	public void before(){
-		sheet1 = new Paper(PaperType.MATT);
+		sheet1 = new Paper(PaperType.MATT, PaperSize.A4);
 		content1 = "Lorem Ipsum";
 	}
 	

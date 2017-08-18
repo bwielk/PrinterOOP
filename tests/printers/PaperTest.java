@@ -17,8 +17,8 @@ public class PaperTest{
 	public void before() {
 		printer1 = new Printer("Toshiba", "0008", 100);
 		printer1.switchON();
-		sheet1 = new Paper(PaperType.MATT);
-		sheet2 = new Paper(PaperType.CAST);
+		sheet1 = new Paper(PaperType.MATT, PaperSize.A4);
+		sheet2 = new Paper(PaperType.CAST, PaperSize.A4);
 		content1 = "ABCDEFG11";
 		content2 = "JKLMNOPdd";
 	}
@@ -34,10 +34,10 @@ public class PaperTest{
 	@Test
 	public void paperCannotBeAddedToPrinter() {
 		for (int i = 0; i < 100; i++) {
-			Paper paper = new Paper(PaperType.MATT);
+			Paper paper = new Paper(PaperType.MATT, PaperSize.A4);
 			printer1.addPaper(paper);
 		}
-		Paper paper101 = new Paper(PaperType.CAST);
+		Paper paper101 = new Paper(PaperType.CAST, PaperSize.A4);
 		System.out.println(printer1.getPaperTray().paperInTheTray());
 		String notification = printer1.getPaperTray().addPaper(paper101);
 		System.out.println(printer1.getPaperTray().paperInTheTray()); // still displays 100(maximum)
