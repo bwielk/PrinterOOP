@@ -16,7 +16,7 @@ public class InkjetPrinter extends Printer {
 		this.output = new ArrayList<Paper>();
 	}
 
-	public HashMap getCartridges() {
+	public HashMap<CMYK, InkCartridge> getCartridges() {
 		return this.cartridges;
 	}
 
@@ -72,11 +72,22 @@ public class InkjetPrinter extends Printer {
 		return true;
 	}
 	
+	public InkCartridge updateCartridge(CMYK color, double value, double percentage){
+		this.cartridges.get(color).setLevel(value*percentage);
+		return this.cartridges.get(color);
+	}
+	
 	public double calcDecreaseCartridgeRate(PrintingSession session){
 		double a = (double)session.getRes().getInkUseRate();
 		double b = (double)session.getContent().length();
 		double c = (double)session.getSize().getCapacity();
-		return (a+(b*c))/(double)100;
+		double result = (a+(b*c))/(double)100;
+		if(session.getMode() == PrintingMode.GRAYSCALE){
+			if(getCartridges().containsKey(CMYK.KEY)){
+				this.cartridges.put(CMYK.KEY, updateCartridge(CMYK.KEY, result, 0.66));
+			}
+		}
+		return result;
 	}
 
 	public String printOff(PrintingSession session) {
@@ -94,6 +105,7 @@ public class InkjetPrinter extends Printer {
 						this.output.add(sheetToPrint);
 						this.count += indexOfContent;
 						setLastFile(session);
+						calcDecreaseCartridgeRate(session);
 					}
 				}else{
 					int indexOfContent = 0;

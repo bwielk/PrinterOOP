@@ -14,12 +14,11 @@ public class InkCartridge extends Cartridge {
 	}
 	
 	//helper testing method
-	public String setLevel(double value){
-		if(value <= (double) 100){
+	public void setLevel(double value){
+		if(value <= (double) 100 && value > (double) 0){
 			this.level = value;
-			return "Level updated to the value of " + value + "";
 		}else{
-			return "The value is too high";
+			System.out.println("The value is wrong");
 		}	
 	}
 }

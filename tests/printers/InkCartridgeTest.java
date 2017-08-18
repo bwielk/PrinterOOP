@@ -24,9 +24,4 @@ public class InkCartridgeTest {
 		cartridge.setLevel(90.0);
 		assertEquals(90.0, cartridge.getLevel(), 0.1);
 	}
-	
-	@Test
-	public void inkLevelCannotBeSetToHigherLevelThanTheMaxCapacity(){
-		assertEquals("The value is too high", cartridge.setLevel(101.0));
-	}
 }

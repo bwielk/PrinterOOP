@@ -220,5 +220,16 @@ public class InkjetPrinterTest {
 		System.out.println(session2.getContent().length());
 		assertEquals(3.0, printer1.calcDecreaseCartridgeRate(session2), 0.1);
 	}
-	
+
+	@Test
+	public void greyscalePrintingCalculatesTonerReduction2(){
+		cartridgesIn(100.0, 100.0, 100.0, 100.0);
+		for(int i=0; i<3; i++){
+			printer1.addPaper(sheet2);
+		}
+		printer1.switchON();
+		printer1.printOff(session2);
+		InkCartridge cartridge = printer1.getCartridges().get(CMYK.KEY);
+		assertEquals(98.0, cartridge.getLevel() , 0.1);
+	}
 }
