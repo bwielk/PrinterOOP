@@ -77,7 +77,6 @@ public class InkjetPrinterTest {
 		printer1.acceptCartridge(cartridge1);
 		printer1.acceptCartridge(cartridge2);
 		assertEquals("Ink levels : \nCYAN: 30.0 % \nMAGENTA: 30.0 % \nYELLOW: n/a \nKEY(BLACK): n/a", printer1.inkReport());
-		System.out.println(printer1.inkReport());
 	}
 	
 	@Test
@@ -166,21 +165,29 @@ public class InkjetPrinterTest {
 	}
 	
 	@Test
-	public void cannotPrintIfNotEnoughPaper(){
-		for(int i=0; i<10; i++){
+	public void cannotPrintIfNotEnoughPaperSizeA4(){
+		for(int i=0; i<8; i++){
 			printer1.addPaper(sheet1);
 		}
+		System.out.println(printer1.paperInTheTray());
+		System.out.println(session.getContentByPage(1));
+		System.out.println(session.getContentByPage(2));
+		System.out.println("Num of pages " + session.getPages());
 		printer1.switchON();
 		assertEquals("Not enough paper", printer1.printOff(session));
+		printer1.addPaper(sheet1);
+		assertEquals("The process is complete", printer1.printOff(session));
+		
+		assertEquals(0, printer1.paperInTheTray()); //PRINTING PROCESS
 	}
 	
 	@Test
-	public void canPrintOffIfEnoughPaper(){
+	public void canPrintOffIfEnoughPaperSizeA4(){
 		for(int i=0; i<12; i++){
 			printer1.addPaper(sheet1);
 		}
 		printer1.switchON();
 		assertEquals("The process is complete", printer1.printOff(session));
-		assertEquals(1, printer1.paperInTheTray());
+		assertEquals(4, printer1.paperInTheTray()); //PRINTING PROCESS
 	}
 }

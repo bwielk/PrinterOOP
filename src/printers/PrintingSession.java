@@ -17,6 +17,7 @@ public class PrintingSession{
 		this.size = size;
 		this.pagesContent = new ArrayList<String>();
 		this.pages = setNumOfPages();
+		splitContentIntoPages();
 	}
 
 	public int getPages() {

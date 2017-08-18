@@ -7,12 +7,16 @@ public class InkjetPrinter extends Printer {
 	
 	private HashMap<CMYK, InkCartridge> cartridges;
 	private PrintingSession file;
+	private boolean duplex;
+	private ArrayList<Paper> output;
 	
 
 	public InkjetPrinter(String brand, String model, int limit) {
 		super(brand, model, limit);
 		this.cartridges = new HashMap<CMYK, InkCartridge>();
 		this.file = null;
+		this.duplex = false;
+		this.output = new ArrayList<Paper>();
 	}
 	
 	public HashMap getCartridges(){
@@ -70,12 +74,22 @@ public class InkjetPrinter extends Printer {
 	
 	public String printOff(PrintingSession session) {
 		int numOfSheets = session.getNumOfSheetsNeeded();
-		if (this.statusON == true) {
-			if (getPaperTray().paperInTheTray() > 0 && numOfSheets < getPaperTray().paperInTheTray()) {
+		if (this.statusON == true){
+			if (getPaperTray().paperInTheTray() > 0 && numOfSheets <= getPaperTray().paperInTheTray()) {
 				setLastFile(session);
-				int sheetsIn = getPaperTray().getTray().size();
-				getPaperTray().getTray().remove(sheetsIn - 1);
-				this.count += 1;
+				int sheetsIn = paperInTheTray();
+				int indexOfContent = 0;
+				for(int i=0; i<session.getPages(); i++){
+					indexOfContent++;
+					Paper sheetToPrint = getPaperTray().getTray().get(i);
+					sheetToPrint.getFrontPage().writeContent(session.getContentByPage(indexOfContent));
+					indexOfContent++;
+					sheetToPrint.getBackPage().writeContent(session.getContentByPage(indexOfContent));
+					indexOfContent++;
+					this.output.add(sheetToPrint);
+					getPaperTray().getTray().remove(i);
+					this.count += indexOfContent;
+				}
 				return "The process is complete";
 			} else {
 				return "Not enough paper";
