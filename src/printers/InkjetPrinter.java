@@ -73,7 +73,8 @@ public class InkjetPrinter extends Printer {
 	}
 	
 	public InkCartridge updateCartridge(CMYK color, double value, double percentage){
-		this.cartridges.get(color).setLevel(value*percentage);
+		double state = this.cartridges.get(color).getLevel();
+		this.cartridges.get(color).setLevel(state - value*percentage);
 		return this.cartridges.get(color);
 	}
 	
@@ -85,6 +86,12 @@ public class InkjetPrinter extends Printer {
 		if(session.getMode() == PrintingMode.GRAYSCALE){
 			if(getCartridges().containsKey(CMYK.KEY)){
 				this.cartridges.put(CMYK.KEY, updateCartridge(CMYK.KEY, result, 0.66));
+				this.cartridges.put(CMYK.CYAN, updateCartridge(CMYK.CYAN, result, 0.34));
+			}else if(session.getMode() == PrintingMode.COLOUR){
+				this.cartridges.put(CMYK.CYAN, updateCartridge(CMYK.CYAN, result, 0.35));
+				this.cartridges.put(CMYK.MAGENTA, updateCartridge(CMYK.MAGENTA, result, 0.25));
+				this.cartridges.put(CMYK.YELLOW, updateCartridge(CMYK.YELLOW, result, 0.30));
+				this.cartridges.put(CMYK.KEY, updateCartridge(CMYK.KEY, result, 0.10));
 			}
 		}
 		return result;
