@@ -10,13 +10,15 @@ public class PrintingSession{
 	private PaperSize size;
 	private ArrayList<String> pagesContent;
 	private boolean duplex;
+	private Resolution res;
 	
 
-	public PrintingSession(String content, PrintingMode mode, PaperSize size, boolean duplex) {
+	public PrintingSession(String content, PrintingMode mode, PaperSize size, boolean duplex, Resolution res) {
 		this.content = content;
 		this.mode = mode;
 		this.size = size;
 		this.duplex = duplex;
+		this.res = res;
 		this.pagesContent = new ArrayList<String>();
 		this.pages = setNumOfPages();
 		splitContentIntoPages();
@@ -76,6 +78,9 @@ public class PrintingSession{
 	public boolean isDuplex() {
 		return duplex;
 	}
-	
+
+	public Resolution getRes() {
+		return res;
+	}
 	
 }

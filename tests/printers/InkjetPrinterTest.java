@@ -47,8 +47,8 @@ public class InkjetPrinterTest {
 		cartridge4 = new InkCartridge(CMYK.KEY);
 		sheet1 = new Paper(PaperType.MATT, PaperSize.A4);
 		sheet2 = new Paper(PaperType.LIGHTWEIGHT, PaperSize.A5);
-		session = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A4, true);
-		session2 = new PrintingSession(content2, PrintingMode.GRAYSCALE, PaperSize.A5, false);
+		session = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A4, true, Resolution.HIGH);
+		session2 = new PrintingSession(content2, PrintingMode.GRAYSCALE, PaperSize.A5, false, Resolution.LOW);
 	}
 	
 	@Test
@@ -207,4 +207,18 @@ public class InkjetPrinterTest {
 		assertEquals("The process is complete", printer1.printOff(session2));
 		assertEquals(1, printer1.paperInTheTray());
 	}
+	
+	@Test
+	public void greyscalePrintingCalculatesTonerReduction(){
+		for(int i=0; i<3; i++){
+			printer1.addPaper(sheet2);
+		}
+		printer1.switchON();
+		assertEquals("The process is complete", printer1.printOff(session2));
+		System.out.println(session2.getRes().getInkUseRate());
+		System.out.println(session2.getSize().getCapacity());
+		System.out.println(session2.getContent().length());
+		assertEquals(3.0, printer1.calcDecreaseCartridgeRate(session2), 0.1);
+	}
+	
 }

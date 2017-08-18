@@ -71,10 +71,16 @@ public class InkjetPrinter extends Printer {
 		}
 		return true;
 	}
+	
+	public double calcDecreaseCartridgeRate(PrintingSession session){
+		double a = (double)session.getRes().getInkUseRate();
+		double b = (double)session.getContent().length();
+		double c = (double)session.getSize().getCapacity();
+		return (a+(b*c))/(double)100;
+	}
 
 	public String printOff(PrintingSession session) {
 		int numOfSheets = session.getNumOfSheetsNeeded();
-		System.out.println("NEW SESSION: SHEEETS : " + numOfSheets);
 		if (this.statusON == true) {
 			if (getPaperTray().paperInTheTray() > 0 && numOfSheets <= getPaperTray().paperInTheTray()) {
 				if (session.isDuplex() == true) {

@@ -15,9 +15,9 @@ public class PrintingSessionTest {
 	@Before
 	public void before(){
 		content = "ABCDEFGHIJKLMNOPQRSTUWYXZabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUWYXZabcdefghijklmnopqrstuvwxyz";
-		session = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A3, true);
-		session2 = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A4, true);
-		session3 = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A5, true);
+		session = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A3, true, Resolution.MEDIUM);
+		session2 = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A4, true, Resolution.HIGH);
+		session3 = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A5, true, Resolution.MEDIUM);
 	}
 	
 	@Test
