@@ -230,6 +230,8 @@ public class InkjetPrinterTest {
 		printer1.switchON();
 		printer1.printOff(session2);
 		InkCartridge cartridge = printer1.getCartridges().get(CMYK.KEY);
-		assertEquals(98.0, cartridge.getLevel(), 0.1);
+		double cartridgeLvl = cartridge.getLevel();
+		cartridgeLvl = Math.round(cartridgeLvl*1);
+		assertEquals(96.0, cartridgeLvl, 0.1);
 	}
 }

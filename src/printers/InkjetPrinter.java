@@ -74,6 +74,7 @@ public class InkjetPrinter extends Printer {
 	
 	public InkCartridge updateCartridge(CMYK color, double value, double percentage){
 		double state = this.cartridges.get(color).getLevel();
+		System.out.println("The state is " + state);
 		this.cartridges.get(color).setLevel(state - value*percentage);
 		return this.cartridges.get(color);
 	}
@@ -123,6 +124,7 @@ public class InkjetPrinter extends Printer {
 						this.output.add(sheetToPrint);
 						this.count += indexOfContent;
 						setLastFile(session);
+						calcDecreaseCartridgeRate(session);
 					}
 				}
 				return "The process is complete";
