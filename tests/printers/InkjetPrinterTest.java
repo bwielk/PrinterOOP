@@ -155,6 +155,7 @@ public class InkjetPrinterTest {
 			printer1.addPaper(sheet1);
 		}
 		printer1.switchON();
+		System.out.println("The file has pages " + session.getPages());
 		printer1.printOff(session);
 		assertEquals(16, printer1.getLastFile().getPages());
 	}
@@ -166,16 +167,18 @@ public class InkjetPrinterTest {
 	
 	@Test
 	public void cannotPrintIfNotEnoughPaperSizeA4(){
-		for(int i=0; i<8; i++){
+		for(int i=0; i<7; i++){
 			printer1.addPaper(sheet1);
 		}
-		System.out.println(printer1.paperInTheTray());
+		/*System.out.println(printer1.paperInTheTray());
 		System.out.println(session.getContentByPage(1));
 		System.out.println(session.getContentByPage(2));
-		System.out.println("Num of pages " + session.getPages());
+		System.out.println("Num of pages " + session.getPages());*/
+		System.out.println("sheets needed : " + session.getNumOfSheetsNeeded());
 		printer1.switchON();
 		assertEquals("Not enough paper", printer1.printOff(session));
 		printer1.addPaper(sheet1);
+		System.out.println("Paper in the tray " + printer1.paperInTheTray());
 		assertEquals("The process is complete", printer1.printOff(session));
 		
 		assertEquals(0, printer1.paperInTheTray()); //PRINTING PROCESS

@@ -74,21 +74,23 @@ public class InkjetPrinter extends Printer {
 	
 	public String printOff(PrintingSession session) {
 		int numOfSheets = session.getNumOfSheetsNeeded();
+		System.out.println("SHEEETS : " + numOfSheets);
 		if (this.statusON == true){
 			if (getPaperTray().paperInTheTray() > 0 && numOfSheets <= getPaperTray().paperInTheTray()) {
-				setLastFile(session);
-				int sheetsIn = paperInTheTray();
 				int indexOfContent = 0;
-				for(int i=0; i<session.getPages(); i++){
+				for(int i=0; i<=numOfSheets; i++){
 					indexOfContent++;
-					Paper sheetToPrint = getPaperTray().getTray().get(i);
+					Paper sheetToPrint = getPaperTray().getTray().remove(0);
 					sheetToPrint.getFrontPage().writeContent(session.getContentByPage(indexOfContent));
 					indexOfContent++;
 					sheetToPrint.getBackPage().writeContent(session.getContentByPage(indexOfContent));
-					indexOfContent++;
 					this.output.add(sheetToPrint);
-					getPaperTray().getTray().remove(i);
 					this.count += indexOfContent;
+					System.out.println("Paper in the tray: " + getPaperTray().getTray().size());
+					setLastFile(session);
+					if(getPaperTray().paperInTheTray() == getPaperTray().paperInTheTray()- numOfSheets){
+						break;
+					};
 				}
 				return "The process is complete";
 			} else {
