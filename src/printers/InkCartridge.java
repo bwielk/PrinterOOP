@@ -17,7 +17,7 @@ public class InkCartridge extends Cartridge {
 		if(value <= (double) 100 && value > 0){
 			this.level = value;
 		}else{
-			System.out.println("The value is wrong");
+			System.out.println("The value is wrong ");
 		}	
 	}
 }

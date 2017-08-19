@@ -246,6 +246,7 @@ public class InkjetPrinterTest {
 	
 	@Test
 	public void colourPrintingCalculatesTheReductionRate(){
+		cartridgesIn(100.0, 100.0, 100.0, 100.0);
 		for(int i=0; i<10; i++){
 			printer1.addPaper(sheet2);
 		}
@@ -257,7 +258,7 @@ public class InkjetPrinterTest {
 	@Test
 	public void colourPrintingReducesAmountOfInkInACartridge(){
 		cartridgesIn(100.0, 100.0, 100.0, 100.0);
-		for(int i=0; i<10; i++){
+		for(int i=0; i<20; i++){
 			printer1.addPaper(sheet2);
 		}
 		printer1.switchON();
@@ -274,9 +275,9 @@ public class InkjetPrinterTest {
 		InkCartridge cartridge4 = printer1.getCartridges().get(CMYK.MAGENTA);
 		double cartridgeLvl4 = cartridge4.getLevel();
 		//cartridgeLvl4 = Math.round(cartridgeLvl4*1);
-		assertEquals(97.0, cartridgeLvl, 0.1);//96,8
-		assertEquals(89.0, cartridgeLvl2, 0.1);//88,8
-		assertEquals(90.0, cartridgeLvl3, 0.1);//90,4
+		assertEquals(96.8, cartridgeLvl, 0.1);//96,8
+		assertEquals(88.8, cartridgeLvl2, 0.1);//88,8
+		assertEquals(90.4, cartridgeLvl3, 0.1);//90,4
 		assertEquals(92.0, cartridgeLvl4, 0.1);
 	}
 	
