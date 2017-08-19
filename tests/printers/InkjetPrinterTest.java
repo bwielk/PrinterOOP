@@ -16,8 +16,10 @@ public class InkjetPrinterTest {
 	private Paper sheet2;
 	private PrintingSession session;
 	private PrintingSession session2;
+	private PrintingSession session3;
 	private String content;
 	private String content2;
+	private String content3;
 	
 	private void cartridgesIn(double a, double b, double c, double d){
 		cartridge1.setLevel(a);
@@ -40,6 +42,7 @@ public class InkjetPrinterTest {
 		}
 		
 		content2 = "QWERTQWERTPLKOIPLKOI";
+		content3 = "QWERTQWERTPLKOIPLKOIQWERTQWERTPLKOIPLKOIQWERTQWERTPLKOIPLKOI";
 		printer1 = new InkjetPrinter("HP", "443", 200); 
 		cartridge1 = new InkCartridge(CMYK.CYAN);
 		cartridge2 = new InkCartridge(CMYK.MAGENTA);
@@ -49,6 +52,7 @@ public class InkjetPrinterTest {
 		sheet2 = new Paper(PaperType.LIGHTWEIGHT, PaperSize.A5);
 		session = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A4, true, Resolution.HIGH);
 		session2 = new PrintingSession(content2, PrintingMode.GRAYSCALE, PaperSize.A5, false, Resolution.LOW);
+		session3 = new PrintingSession(content3, PrintingMode.COLOUR, PaperSize.A4, true, Resolution.MEDIUM);
 	}
 	
 	@Test
@@ -215,14 +219,11 @@ public class InkjetPrinterTest {
 		}
 		printer1.switchON();
 		assertEquals("The process is complete", printer1.printOff(session2));
-		System.out.println(session2.getRes().getInkUseRate());
-		System.out.println(session2.getSize().getCapacity());
-		System.out.println(session2.getContent().length());
 		assertEquals(3.0, printer1.calcDecreaseCartridgeRate(session2), 0.1);
 	}
 
 	@Test
-	public void greyscalePrintingCalculatesTonerReduction2(){
+	public void greyscalePrintingReducesAmountOfInkInACartridge(){
 		cartridgesIn(100.0, 100.0, 100.0, 100.0);
 		for(int i=0; i<3; i++){
 			printer1.addPaper(sheet2);
@@ -232,6 +233,51 @@ public class InkjetPrinterTest {
 		InkCartridge cartridge = printer1.getCartridges().get(CMYK.KEY);
 		double cartridgeLvl = cartridge.getLevel();
 		cartridgeLvl = Math.round(cartridgeLvl*1);
+		InkCartridge cartridge2 = printer1.getCartridges().get(CMYK.CYAN);
+		double cartridgeLvl2 = cartridge2.getLevel();
+		cartridgeLvl2 = Math.round(cartridgeLvl2*1);
+		InkCartridge cartridge3 = printer1.getCartridges().get(CMYK.YELLOW);
+		double cartridgeLvl3 = cartridge3.getLevel();
+		cartridgeLvl3 = Math.round(cartridgeLvl3*1);
 		assertEquals(96.0, cartridgeLvl, 0.1);
+		assertEquals(98.0, cartridgeLvl2, 0.1);
+		assertEquals(100.0, cartridgeLvl3, 0.1);
 	}
+	
+	@Test
+	public void colourPrintingCalculatesTheReductionRate(){
+		for(int i=0; i<10; i++){
+			printer1.addPaper(sheet2);
+		}
+		printer1.switchON();
+		assertEquals("The process is complete", printer1.printOff(session3));
+		assertEquals(32.0, printer1.calcDecreaseCartridgeRate(session3), 0.1);
+	}
+	
+	@Test
+	public void colourPrintingReducesAmountOfInkInACartridge(){
+		cartridgesIn(100.0, 100.0, 100.0, 100.0);
+		for(int i=0; i<10; i++){
+			printer1.addPaper(sheet2);
+		}
+		printer1.switchON();
+		printer1.printOff(session3);
+		InkCartridge cartridge = printer1.getCartridges().get(CMYK.KEY);
+		double cartridgeLvl = cartridge.getLevel();
+		//cartridgeLvl = Math.round(cartridgeLvl*1);
+		InkCartridge cartridge2 = printer1.getCartridges().get(CMYK.CYAN);
+		double cartridgeLvl2 = cartridge2.getLevel();
+		//cartridgeLvl2 = Math.round(cartridgeLvl2*1);
+		InkCartridge cartridge3 = printer1.getCartridges().get(CMYK.YELLOW);
+		double cartridgeLvl3 = cartridge3.getLevel();
+		//cartridgeLvl3 = Math.round(cartridgeLvl3*1);
+		InkCartridge cartridge4 = printer1.getCartridges().get(CMYK.MAGENTA);
+		double cartridgeLvl4 = cartridge4.getLevel();
+		//cartridgeLvl4 = Math.round(cartridgeLvl4*1);
+		assertEquals(97.0, cartridgeLvl, 0.1);//96,8
+		assertEquals(89.0, cartridgeLvl2, 0.1);//88,8
+		assertEquals(90.0, cartridgeLvl3, 0.1);//90,4
+		assertEquals(92.0, cartridgeLvl4, 0.1);
+	}
+	
 }

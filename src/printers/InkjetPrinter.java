@@ -74,7 +74,6 @@ public class InkjetPrinter extends Printer {
 	
 	public InkCartridge updateCartridge(CMYK color, double value, double percentage){
 		double state = this.cartridges.get(color).getLevel();
-		System.out.println("The state is " + state);
 		this.cartridges.get(color).setLevel(state - value*percentage);
 		return this.cartridges.get(color);
 	}
@@ -89,6 +88,7 @@ public class InkjetPrinter extends Printer {
 				this.cartridges.put(CMYK.KEY, updateCartridge(CMYK.KEY, result, 0.66));
 				this.cartridges.put(CMYK.CYAN, updateCartridge(CMYK.CYAN, result, 0.34));
 			}else if(session.getMode() == PrintingMode.COLOUR){
+				System.out.println("DEBUGGING");
 				this.cartridges.put(CMYK.CYAN, updateCartridge(CMYK.CYAN, result, 0.35));
 				this.cartridges.put(CMYK.MAGENTA, updateCartridge(CMYK.MAGENTA, result, 0.25));
 				this.cartridges.put(CMYK.YELLOW, updateCartridge(CMYK.YELLOW, result, 0.30));
