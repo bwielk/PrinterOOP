@@ -56,6 +56,16 @@ public class Printer {
 	public int paperInTheTray() {
 		return getPaperTray().paperInTheTray();
 	}
+	
+	public boolean isEnoughSheetsBySizeNeeded(PrintingSession session) {
+		int counter = 0;
+		for (Paper paper : paperTray.getTray()) {
+			if (paper.getSize() == session.getSize()) {
+				counter++;
+			}
+		}
+		return (session.getNumOfSheetsNeeded() <= counter);
+	}
 
 	public String printOff() {
 		if (this.statusON == true) {

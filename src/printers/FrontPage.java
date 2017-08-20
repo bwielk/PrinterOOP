@@ -31,5 +31,4 @@ public class FrontPage {
 		}
 		return "The page is blank";
 	}
-	
 }

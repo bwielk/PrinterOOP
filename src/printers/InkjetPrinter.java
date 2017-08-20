@@ -20,6 +20,10 @@ public class InkjetPrinter extends Printer {
 		return this.cartridges;
 	}
 
+	public ArrayList<Paper> getOutput() {
+		return output;
+	}
+
 	public PrintingSession getLastFile() {
 		return file;
 	}
@@ -97,45 +101,39 @@ public class InkjetPrinter extends Printer {
 		return result;
 	}
 
-	public boolean isEnoughSheetsBySizeNeeded(PrintingSession session) {
-		int counter = 0;
-		for (Paper paper : paperTray.getTray()) {
-			if (paper.getSize() == session.getSize()) {
-				counter++;
-			}
-		}
-		return (session.getNumOfSheetsNeeded() <= counter);
-	}
-
 	public String printOff(PrintingSession session) {
 		int numOfSheets = session.getNumOfSheetsNeeded();
 		if (this.statusON == true) {
 			if (isEnoughSheetsBySizeNeeded(session)) {
 				if (session.isDuplex() == true) {
-					int indexOfContent = 0;
+					int indexOfContent1 = 0;
 					for (int i = 0; i < numOfSheets; i++) {
-						indexOfContent++;
+						indexOfContent1++;
 						Paper sheetToPrint = getPaperTray().getTray().remove(0);
-						sheetToPrint.getFrontPage().writeContent(session.getContentByPage(indexOfContent));
-						indexOfContent++;
-						sheetToPrint.getBackPage().writeContent(session.getContentByPage(indexOfContent));
+						sheetToPrint.getFrontPage().writeContent(session.getContentByPage(indexOfContent1));
+						indexOfContent1++;
+						sheetToPrint.getBackPage().writeContent(session.getContentByPage(indexOfContent1));
 						this.output.add(sheetToPrint);
-						this.count += indexOfContent;
+						this.count += indexOfContent1;
 						setLastFile(session);
 						calcDecreaseCartridgeRate(session);
 					}
 				} else {
-					int indexOfContent = 0;
+					int indexOfContent2 = 0;
+					//System.out.println("New session");
+					indexOfContent2++;
 					for (int i = 0; i < numOfSheets; i++) {
-						indexOfContent++;
 						Paper sheetToPrint = getPaperTray().getTray().remove(0);
-						sheetToPrint.getFrontPage().writeContent(session.getContentByPage(indexOfContent));
+						String content = session.getContentByPage(indexOfContent2);
+						sheetToPrint.getFrontPage().writeContent(content);
 						this.output.add(sheetToPrint);
-						this.count += indexOfContent;
+						//System.out.println(getOutput().get(indexOfContent-1).getContentFront());
 						setLastFile(session);
 						calcDecreaseCartridgeRate(session);
 					}
+					this.count += session.getPages();
 				}
+
 				return "The process is complete";
 
 			} else {

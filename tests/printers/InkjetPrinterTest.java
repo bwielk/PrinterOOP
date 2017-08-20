@@ -2,6 +2,8 @@ package printers;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -192,6 +194,10 @@ public class InkjetPrinterTest {
 		//System.out.println("Paper in the tray " + printer1.paperInTheTray());
 		assertEquals("The process is complete", printer1.printOff(session));	
 		assertEquals(0, printer1.paperInTheTray()); //PRINTING PROCESS
+		assertEquals("SjdnfjdnbfjdsbfkdbsksjabdbdkdafbfvvsdfdSjdnfjdnbfj", printer1.getOutput().get(0).getContentFront());
+		assertEquals("dsbfkdbsksjabdbdkdafbfvvsdfdSjdnfjdnbfjdsbfkdbsksj", printer1.getOutput().get(0).getContentBack());
+		assertEquals("abdbdkdafbfvvsdfdSjdnfjdnbfjdsbfkdbsksjabdbdkdafbf", printer1.getOutput().get(1).getContentFront());
+		assertEquals("vvsdfdSjdnfjdnbfjdsbfkdbsksjabdbdkdafbfvvsdfdSjdnf", printer1.getOutput().get(1).getContentBack());
 	}
 	
 	@Test
@@ -200,7 +206,7 @@ public class InkjetPrinterTest {
 			printer1.addPaper(sheet1);
 		}
 		printer1.switchON();
-		System.out.println("THE TEST!");
+		//System.out.println("THE TEST!");
 		assertEquals("The process is complete", printer1.printOff(session));
 		assertEquals(4, printer1.paperInTheTray()); //PRINTING PROCESS
 	}
@@ -211,9 +217,10 @@ public class InkjetPrinterTest {
 			printer1.addPaper(sheet2);
 		}
 		printer1.switchON();
-		System.out.println(session2.getNumOfSheetsNeeded());
 		assertEquals("The process is complete", printer1.printOff(session2));
 		assertEquals(1, printer1.paperInTheTray());
+		assertEquals("QWERTQWERT", printer1.getOutput().get(0).getFrontPage().getContent());
+		assertEquals("PLKOIPLKOI", printer1.getOutput().get(1).getFrontPage().getContent());
 	}
 	
 	@Test
@@ -294,7 +301,7 @@ public class InkjetPrinterTest {
 			printer1.addPaper(sheet2);
 		}
 		printer1.switchON();
-		System.out.println(session2.getNumOfSheetsNeeded());
+		//System.out.println(session2.getNumOfSheetsNeeded());
 		assertEquals("Not enough paper", printer1.printOff(session2));
 	}
 	
@@ -307,7 +314,7 @@ public class InkjetPrinterTest {
 			printer1.addPaper(sheet2);
 		}
 		printer1.switchON();
-		System.out.println(session2.getNumOfSheetsNeeded());
+		//System.out.println(session2.getNumOfSheetsNeeded());
 		assertEquals("The process is complete", printer1.printOff(session2));
 	}
 }
