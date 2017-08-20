@@ -71,42 +71,46 @@ public class InkjetPrinter extends Printer {
 		}
 		return true;
 	}
-	
-	public InkCartridge updateCartridge(CMYK color, double value, double percentage){
-		System.out.println("The color is " + color);
-		System.out.println("The value is " + value);
-		System.out.println("The % is " + percentage);
+
+	public InkCartridge updateCartridge(CMYK color, double value, double percentage) {
 		double state = this.cartridges.get(color).getLevel();
-		System.out.println("The state is " + state);
-		this.cartridges.get(color).setLevel(state - value*percentage);
-		System.out.println(state - value*percentage);
-		System.out.println("END OF SESSION--------------");
+		this.cartridges.get(color).setLevel(state - value * percentage);
 		return this.cartridges.get(color);
 	}
-	
-	public double calcDecreaseCartridgeRate(PrintingSession session){
-		double a = (double)session.getRes().getInkUseRate();
-		double b = (double)session.getContent().length();
-		double c = (double)session.getSize().getCapacity();
-		double result = (a+(b*c))/(double)100;
-		if(session.getMode() == PrintingMode.GRAYSCALE){
-			if(getCartridges().containsKey(CMYK.KEY)){
+
+	public double calcDecreaseCartridgeRate(PrintingSession session) {
+		double a = (double) session.getRes().getInkUseRate();
+		double b = (double) session.getContent().length();
+		double c = (double) session.getSize().getCapacity();
+		double result = (a + (b * c)) / (double) 100;
+		if (session.getMode() == PrintingMode.GRAYSCALE) {
+			if (getCartridges().containsKey(CMYK.KEY)) {
 				this.cartridges.put(CMYK.KEY, updateCartridge(CMYK.KEY, result, 0.66));
 				this.cartridges.put(CMYK.CYAN, updateCartridge(CMYK.CYAN, result, 0.34));
 			}
-		}else if(session.getMode() == PrintingMode.COLOUR){
-				this.cartridges.put(CMYK.CYAN, updateCartridge(CMYK.CYAN, result, 0.35));
-				this.cartridges.put(CMYK.MAGENTA, updateCartridge(CMYK.MAGENTA, result, 0.25));
-				this.cartridges.put(CMYK.YELLOW, updateCartridge(CMYK.YELLOW, result, 0.30));
-				this.cartridges.put(CMYK.KEY, updateCartridge(CMYK.KEY, result, 0.10));
-			}
+		} else if (session.getMode() == PrintingMode.COLOUR) {
+			this.cartridges.put(CMYK.CYAN, updateCartridge(CMYK.CYAN, result, 0.35));
+			this.cartridges.put(CMYK.MAGENTA, updateCartridge(CMYK.MAGENTA, result, 0.25));
+			this.cartridges.put(CMYK.YELLOW, updateCartridge(CMYK.YELLOW, result, 0.30));
+			this.cartridges.put(CMYK.KEY, updateCartridge(CMYK.KEY, result, 0.10));
+		}
 		return result;
+	}
+
+	public boolean isEnoughSheetsBySizeNeeded(PrintingSession session) {
+		int counter = 0;
+		for (Paper paper : paperTray.getTray()) {
+			if (paper.getSize() == session.getSize()) {
+				counter++;
+			}
+		}
+		return (session.getNumOfSheetsNeeded() <= counter);
 	}
 
 	public String printOff(PrintingSession session) {
 		int numOfSheets = session.getNumOfSheetsNeeded();
 		if (this.statusON == true) {
-			if (getPaperTray().paperInTheTray() > 0 && numOfSheets <= getPaperTray().paperInTheTray()) {
+			if (isEnoughSheetsBySizeNeeded(session)) {
 				if (session.isDuplex() == true) {
 					int indexOfContent = 0;
 					for (int i = 0; i < numOfSheets; i++) {
@@ -120,7 +124,7 @@ public class InkjetPrinter extends Printer {
 						setLastFile(session);
 						calcDecreaseCartridgeRate(session);
 					}
-				}else{
+				} else {
 					int indexOfContent = 0;
 					for (int i = 0; i < numOfSheets; i++) {
 						indexOfContent++;
@@ -134,7 +138,7 @@ public class InkjetPrinter extends Printer {
 				}
 				return "The process is complete";
 
-			}else{
+			} else {
 				return "Not enough paper";
 			}
 		} else {

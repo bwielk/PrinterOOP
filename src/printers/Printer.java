@@ -5,7 +5,7 @@ public class Printer {
 	private String brand;
 	private String model;
 	protected int count;
-	private PaperTray paperTray;
+	protected PaperTray paperTray;
 	protected boolean statusON;
 
 	public Printer(String brand, String model, int limit) {

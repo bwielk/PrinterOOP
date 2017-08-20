@@ -17,6 +17,7 @@ public class InkjetPrinterTest {
 	private PrintingSession session;
 	private PrintingSession session2;
 	private PrintingSession session3;
+	private PrintingSession session4;
 	private String content;
 	private String content2;
 	private String content3;
@@ -53,6 +54,7 @@ public class InkjetPrinterTest {
 		session = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A4, true, Resolution.HIGH);
 		session2 = new PrintingSession(content2, PrintingMode.GRAYSCALE, PaperSize.A5, false, Resolution.LOW);
 		session3 = new PrintingSession(content3, PrintingMode.COLOUR, PaperSize.A4, true, Resolution.MEDIUM);
+		session4 = new PrintingSession(content3, PrintingMode.GRAYSCALE, PaperSize.A5, false, Resolution.LOW);
 	}
 	
 	@Test
@@ -198,6 +200,7 @@ public class InkjetPrinterTest {
 			printer1.addPaper(sheet1);
 		}
 		printer1.switchON();
+		System.out.println("THE TEST!");
 		assertEquals("The process is complete", printer1.printOff(session));
 		assertEquals(4, printer1.paperInTheTray()); //PRINTING PROCESS
 	}
@@ -208,13 +211,14 @@ public class InkjetPrinterTest {
 			printer1.addPaper(sheet2);
 		}
 		printer1.switchON();
+		System.out.println(session2.getNumOfSheetsNeeded());
 		assertEquals("The process is complete", printer1.printOff(session2));
 		assertEquals(1, printer1.paperInTheTray());
 	}
 	
 	@Test
 	public void greyscalePrintingCalculatesTonerReduction(){
-		for(int i=0; i<3; i++){
+		for(int i=0; i<10; i++){
 			printer1.addPaper(sheet2);
 		}
 		printer1.switchON();
@@ -248,7 +252,7 @@ public class InkjetPrinterTest {
 	public void colourPrintingCalculatesTheReductionRate(){
 		cartridgesIn(100.0, 100.0, 100.0, 100.0);
 		for(int i=0; i<10; i++){
-			printer1.addPaper(sheet2);
+			printer1.addPaper(sheet1);
 		}
 		printer1.switchON();
 		assertEquals("The process is complete", printer1.printOff(session3));
@@ -259,7 +263,7 @@ public class InkjetPrinterTest {
 	public void colourPrintingReducesAmountOfInkInACartridge(){
 		cartridgesIn(100.0, 100.0, 100.0, 100.0);
 		for(int i=0; i<20; i++){
-			printer1.addPaper(sheet2);
+			printer1.addPaper(sheet1);
 		}
 		printer1.switchON();
 		printer1.printOff(session3);
@@ -281,4 +285,29 @@ public class InkjetPrinterTest {
 		assertEquals(92.0, cartridgeLvl4, 0.1);
 	}
 	
+	@Test
+	public void printerDoesntHaveEnoughSheetsOfRequiredSize(){
+		for(int i=0; i<2; i++){
+			printer1.addPaper(sheet1);
+		}
+		for(int i=0; i<1; i++){
+			printer1.addPaper(sheet2);
+		}
+		printer1.switchON();
+		System.out.println(session2.getNumOfSheetsNeeded());
+		assertEquals("Not enough paper", printer1.printOff(session2));
+	}
+	
+	@Test
+	public void printerHasEnoughSheetsOfRequiredSize(){
+		for(int i=0; i<2; i++){
+			printer1.addPaper(sheet1);
+		}
+		for(int i=0; i<3; i++){
+			printer1.addPaper(sheet2);
+		}
+		printer1.switchON();
+		System.out.println(session2.getNumOfSheetsNeeded());
+		assertEquals("The process is complete", printer1.printOff(session2));
+	}
 }
