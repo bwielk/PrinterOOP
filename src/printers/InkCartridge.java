@@ -6,7 +6,7 @@ public class InkCartridge extends Cartridge {
 	
 	public InkCartridge(CMYK color){
 		super(color);
-		this.level = 100.0;
+		this.level = 1000.0;
 	}
 	
 	public double getLevel(){
@@ -14,10 +14,12 @@ public class InkCartridge extends Cartridge {
 	}
 
 	public void setLevel(double value){
-		if(value <= (double) 100 && value > 0){
+		if(value <= (double) 1000.0 && value >= 0){
 			this.level = value;
+			System.out.println("The cartridge is upddated " + value);
+			return;
 		}else{
-			System.out.println("The value is wrong ");
+			System.out.println("The value is wrong");
 		}	
 	}
 }

@@ -46,12 +46,12 @@ public class InkjetPrinter extends Printer {
 	}
 
 	public String inkReport() {
-		String cyan = (cartridges.containsKey(CMYK.CYAN)) ? "" + cartridges.get(CMYK.CYAN).getLevel() + " %" : "n/a";
-		String magenta = (cartridges.containsKey(CMYK.MAGENTA)) ? "" + cartridges.get(CMYK.MAGENTA).getLevel() + " %"
+		String cyan = (cartridges.containsKey(CMYK.CYAN)) ? "" + cartridges.get(CMYK.CYAN).getLevel()/1000*100+ " %" : "n/a";
+		String magenta = (cartridges.containsKey(CMYK.MAGENTA)) ? "" + cartridges.get(CMYK.MAGENTA).getLevel()/1000*100 + " %"
 				: "n/a";
-		String yellow = (cartridges.containsKey(CMYK.YELLOW)) ? "" + cartridges.get(CMYK.YELLOW).getLevel() + " %"
+		String yellow = (cartridges.containsKey(CMYK.YELLOW)) ? "" + cartridges.get(CMYK.YELLOW).getLevel()/1000*100 + " %"
 				: "n/a";
-		String key = (cartridges.containsKey(CMYK.KEY)) ? "" + cartridges.get(CMYK.KEY).getLevel() + " %" : "n/a";
+		String key = (cartridges.containsKey(CMYK.KEY)) ? "" + cartridges.get(CMYK.KEY).getLevel()/1000*100 + " %" : "n/a";
 		return "Ink levels : \nCYAN: " + cyan + " \nMAGENTA: " + magenta + " \nYELLOW: " + yellow + " \nKEY(BLACK): "
 				+ key + "";
 	}
@@ -59,7 +59,7 @@ public class InkjetPrinter extends Printer {
 	public String lowLevel() {
 		ArrayList<String> report = new ArrayList<String>();
 		for (InkCartridge cartridge : cartridges.values()) {
-			if (cartridge.getLevel() <= (double) 20.0) {
+			if (cartridge.getLevel() <= (double)200.0) {
 				report.add(cartridge.getColor().toString());
 			}
 		}
@@ -69,7 +69,7 @@ public class InkjetPrinter extends Printer {
 
 	public boolean cartridgesFull() {
 		for (InkCartridge cartridge : cartridges.values()) {
-			if (cartridge.getLevel() <= (double) 20.0) {
+			if (cartridge.getLevel() <= (double) 200.0) {
 				return false;
 			}
 		}
@@ -78,7 +78,9 @@ public class InkjetPrinter extends Printer {
 
 	public InkCartridge updateCartridge(CMYK color, double value, double percentage) {
 		double state = this.cartridges.get(color).getLevel();
-		this.cartridges.get(color).setLevel(state - value * percentage);
+		System.out.println(state);
+		System.out.println(state - value*percentage);
+		System.out.println("The cartridges have been upddated ");
 		return this.cartridges.get(color);
 	}
 
@@ -87,6 +89,7 @@ public class InkjetPrinter extends Printer {
 		double b = (double) session.getContent().length();
 		double c = (double) session.getSize().getCapacity();
 		double result = (a + (b * c)) / (double) 100;
+		System.out.println("Res " + a + "; length " + b + " ;capacity "+ c + " ; result " + result);
 		if (session.getMode() == PrintingMode.GRAYSCALE) {
 			if (getCartridges().containsKey(CMYK.KEY)) {
 				this.cartridges.put(CMYK.KEY, updateCartridge(CMYK.KEY, result, 0.66));
@@ -102,10 +105,12 @@ public class InkjetPrinter extends Printer {
 	}
 
 	public String printOff(PrintingSession session) {
+		System.out.println("BEGIN");
 		int numOfSheets = session.getNumOfSheetsNeeded();
 		if (this.statusON == true) {
 			if (isEnoughSheetsBySizeNeeded(session)) {
 				if (session.isDuplex() == true) {
+					System.out.println("Printing initsed");
 					int indexOfContent1 = 0;
 					for (int i = 0; i < numOfSheets; i++) {
 						indexOfContent1++;
@@ -117,6 +122,7 @@ public class InkjetPrinter extends Printer {
 						this.count += indexOfContent1;
 						setLastFile(session);
 						calcDecreaseCartridgeRate(session);
+						System.out.println("WORKS");
 					}
 				} else {
 					int indexOfContent2 = 0;
@@ -133,9 +139,7 @@ public class InkjetPrinter extends Printer {
 					}
 					this.count += session.getPages();
 				}
-
 				return "The process is complete";
-
 			} else {
 				return "Not enough paper";
 			}

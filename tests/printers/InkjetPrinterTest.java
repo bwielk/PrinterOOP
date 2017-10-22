@@ -85,8 +85,8 @@ public class InkjetPrinterTest {
 	
 	@Test
 	public void checksInkLevels(){
-		cartridge1.setLevel(30.0);
-		cartridge2.setLevel(30.0);
+		cartridge1.setLevel(300.0);
+		cartridge2.setLevel(300.0);
 		printer1.acceptCartridge(cartridge1);
 		printer1.acceptCartridge(cartridge2);
 		assertEquals("Ink levels : \nCYAN: 30.0 % \nMAGENTA: 30.0 % \nYELLOW: n/a \nKEY(BLACK): n/a", printer1.inkReport());
@@ -94,7 +94,7 @@ public class InkjetPrinterTest {
 	
 	@Test
 	public void notifiesOnLowLevels(){
-		cartridgesIn(10.0, 20.0, 10.0, 20.0);
+		cartridgesIn(100.0, 20.0, 100.0, 200.0);
 		String result = printer1.lowLevel();
 		assertEquals(true, result.contains("YELLOW"));
 		assertEquals(true, result.contains("CYAN"));
@@ -104,7 +104,7 @@ public class InkjetPrinterTest {
 	
 	@Test
 	public void notifiesOnLowLevels2(){
-		cartridgesIn(10.0, 20.0, 10.0, 30.0);
+		cartridgesIn(100.0, 200.0, 100.0, 300.0);
 		String result = printer1.lowLevel();
 		assertEquals(true, result.contains("YELLOW"));
 		assertEquals(true, result.contains("CYAN"));
@@ -114,19 +114,19 @@ public class InkjetPrinterTest {
 	
 	@Test
 	public void notifiesOnLowLevels3(){
-		cartridgesIn(90.0, 20.0, 90.0, 90.0);
+		cartridgesIn(900.0, 200.0, 900.0, 900.0);
 		assertEquals("ATTENTION! The levels of inks: MAGENTA are low!", printer1.lowLevel());
 	}
 	
 	@Test
 	public void areCartridgesFull(){
-		cartridgesIn(20.0, 34.0, 100.0, 100.0);
+		cartridgesIn(200.0, 340.0, 1000.0, 1000.0);
 		assertEquals(false, printer1.cartridgesFull());
 	}
 	
 	@Test
 	public void areCartridgesFull2(){
-		cartridgesIn(100.0, 210.0, 30.0, 21.0);
+		cartridgesIn(1000.0, 210.0, 300.0, 210.0);
 		assertEquals(true, printer1.cartridgesFull());
 	}
 	
@@ -179,19 +179,14 @@ public class InkjetPrinterTest {
 	}
 	
 	@Test
-	public void cannotPrintIfNotEnoughPaperSizeA4(){
+	public void cannotPrintIfNotEnoughPaperSizeA4PrintsIfPaperAdded(){
+		cartridgesIn(1000.0, 1000.0, 1000.0, 1000.0);
 		for(int i=0; i<7; i++){
 			printer1.addPaper(sheet1);
 		}
-		/*System.out.println(printer1.paperInTheTray());
-		System.out.println(session.getContentByPage(1));
-		System.out.println(session.getContentByPage(2));
-		System.out.println("Num of pages " + session.getPages());*/
-		//System.out.println("sheets needed : " + session.getNumOfSheetsNeeded());
 		printer1.switchON();
 		assertEquals("Not enough paper", printer1.printOff(session));
 		printer1.addPaper(sheet1);
-		//System.out.println("Paper in the tray " + printer1.paperInTheTray());
 		assertEquals("The process is complete", printer1.printOff(session));	
 		assertEquals(0, printer1.paperInTheTray()); //PRINTING PROCESS
 		assertEquals("SjdnfjdnbfjdsbfkdbsksjabdbdkdafbfvvsdfdSjdnfjdnbfj", printer1.getOutput().get(0).getContentFront());
@@ -201,7 +196,27 @@ public class InkjetPrinterTest {
 	}
 	
 	@Test
-	public void canPrintOffIfEnoughPaperSizeA4(){
+	public void canPrintOffIfEnoughPaperSizeA4p1(){
+		for(int i=0; i<20; i++){
+			printer1.addPaper(sheet1);
+		}
+		/*System.out.println(printer1.paperInTheTray());
+		System.out.println(session.getContentByPage(1));
+		System.out.println(session.getContentByPage(2));
+		System.out.println("Num of pages " + session.getPages());*/
+		//System.out.println("sheets needed : " + session.getNumOfSheetsNeeded());
+		printer1.switchON();
+		//System.out.println("Paper in the tray " + printer1.paperInTheTray());
+		assertEquals("The process is complete", printer1.printOff(session3));
+		assertEquals(0, printer1.paperInTheTray()); //PRINTING PROCESS
+		/*assertEquals("", printer1.getOutput().get(0).getContentFront());
+		assertEquals("", printer1.getOutput().get(0).getContentBack());
+		assertEquals("", printer1.getOutput().get(1).getContentFront());
+		assertEquals("", printer1.getOutput().get(1).getContentBack());*/
+	}
+	
+	@Test
+	public void canPrintOffIfEnoughPaperSizeA4p2(){
 		for(int i=0; i<12; i++){
 			printer1.addPaper(sheet1);
 		}
@@ -230,12 +245,12 @@ public class InkjetPrinterTest {
 		}
 		printer1.switchON();
 		assertEquals("The process is complete", printer1.printOff(session2));
-		assertEquals(3.0, printer1.calcDecreaseCartridgeRate(session2), 0.1);
+		assertEquals(0.3, printer1.calcDecreaseCartridgeRate(session2), 0.1);
 	}
 
 	@Test
 	public void greyscalePrintingReducesAmountOfInkInACartridge(){
-		cartridgesIn(100.0, 100.0, 100.0, 100.0);
+		cartridgesIn(1000.0, 1000.0, 1000.0, 1000.0);
 		for(int i=0; i<3; i++){
 			printer1.addPaper(sheet2);
 		}
@@ -257,7 +272,7 @@ public class InkjetPrinterTest {
 	
 	@Test
 	public void colourPrintingCalculatesTheReductionRate(){
-		cartridgesIn(100.0, 100.0, 100.0, 100.0);
+		cartridgesIn(1000.0, 1000.0, 1000.0, 1000.0);
 		for(int i=0; i<10; i++){
 			printer1.addPaper(sheet1);
 		}
@@ -268,7 +283,7 @@ public class InkjetPrinterTest {
 	
 	@Test
 	public void colourPrintingReducesAmountOfInkInACartridge(){
-		cartridgesIn(100.0, 100.0, 100.0, 100.0);
+		cartridgesIn(1000.0, 1000.0, 1000.0, 1000.0);
 		for(int i=0; i<20; i++){
 			printer1.addPaper(sheet1);
 		}
@@ -286,10 +301,10 @@ public class InkjetPrinterTest {
 		InkCartridge cartridge4 = printer1.getCartridges().get(CMYK.MAGENTA);
 		double cartridgeLvl4 = cartridge4.getLevel();
 		//cartridgeLvl4 = Math.round(cartridgeLvl4*1);
-		assertEquals(96.8, cartridgeLvl, 0.1);//96,8
-		assertEquals(88.8, cartridgeLvl2, 0.1);//88,8
-		assertEquals(90.4, cartridgeLvl3, 0.1);//90,4
-		assertEquals(92.0, cartridgeLvl4, 0.1);
+		assertEquals(999.68, cartridgeLvl, 0.1 );//96,8
+		assertEquals(998.88, cartridgeLvl2, 0.1);//88,8
+		assertEquals(999.04, cartridgeLvl3, 0.1);//90,4
+		assertEquals(999.20, cartridgeLvl4, 0.1);
 	}
 	
 	@Test

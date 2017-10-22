@@ -14,7 +14,7 @@ public class PrintingSessionTest {
 	
 	@Before
 	public void before(){
-		content = "ABCDEFGHIJKLMNOPQRSTUWYXZabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUWYXZabcdefghijklmnopqrstuvwxyz";
+		content = "ABCDEFGHIJKLMNOPQRSTUWYXZabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUWYXZabcdefghijklmnopqrstuvwxyz";//102 chars
 		session = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A3, true, Resolution.MEDIUM);
 		session2 = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A4, true, Resolution.HIGH);
 		session3 = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A5, true, Resolution.MEDIUM);
@@ -47,6 +47,7 @@ public class PrintingSessionTest {
 	
 	@Test
 	public void canDivideContentByPagesCapacity(){
+		System.out.println("!!!!!!!!!!!!!!!   The test begins  !!!!!!!!!!!!!!");
 		assertEquals(2, session.splitContentIntoPages().size());
 		assertEquals(11, session3.splitContentIntoPages().size());
 		assertEquals(3, session2.splitContentIntoPages().size());

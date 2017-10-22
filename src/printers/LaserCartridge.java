@@ -6,7 +6,7 @@ public class LaserCartridge extends Cartridge {
 
 	public LaserCartridge(CMYK color) {
 		super(color);
-		this.level = 200.0;
+		this.level = 2000.0;
 	}
 
 	public double getLevel() {
@@ -14,7 +14,7 @@ public class LaserCartridge extends Cartridge {
 	}
 
 	public String setLevel(double value) {
-		if (value <= (double) 200) {
+		if (value <= (double) 2000) {
 			this.level = value;
 			return "Level updated to the value of " + value + "";
 		} else {

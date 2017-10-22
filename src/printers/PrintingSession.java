@@ -56,19 +56,22 @@ public class PrintingSession{
 	}
 	
 	public ArrayList<String> splitContentIntoPages(){
+		ArrayList<String> content = new ArrayList<String>();
 		int startPosition = 0;
 		int endIndexCalc = 0;
 		for(int i=0; i<getPages(); i++){
 			if((getContent().length() - endIndexCalc) >= getSize().getCapacity()){	
-				int endIndex = startPosition + (getSize().getCapacity());
-				endIndexCalc = endIndex;
-				this.pagesContent.add(getContent().substring(startPosition, endIndex));
-				startPosition += (getSize().getCapacity());
+				endIndexCalc = startPosition + (getSize().getCapacity());
+				content.add(getContent().substring(startPosition, endIndexCalc));
+				startPosition += getSize().getCapacity();
 			}else{
-				this.pagesContent.add(getContent().substring(startPosition));
+				content.add(getContent().substring(startPosition));
 			}
 		}
-		return this.pagesContent;
+		for(int i=0; i<content.size(); i++){
+			this.pagesContent.add(content.get(i));
+		}
+		return content;
 	}
 	
 	public String getContentByPage(int pageNum){

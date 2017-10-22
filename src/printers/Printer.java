@@ -64,6 +64,7 @@ public class Printer {
 				counter++;
 			}
 		}
+		System.out.println("Counter value : " + counter);
 		return (session.getNumOfSheetsNeeded() <= counter);
 	}
 
