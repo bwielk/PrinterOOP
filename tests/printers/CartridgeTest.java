@@ -17,6 +17,6 @@ public class CartridgeTest{
 	@Test
 	public void aCartridgeHasProperties() {
 		assertEquals(CMYK.CYAN, cartridge.getColor());
-		assertEquals(100.0, cartridge.getLevel(), 0.1);
+		assertEquals(1000.0, cartridge.getLevel(), 0.1);
 	}
 }

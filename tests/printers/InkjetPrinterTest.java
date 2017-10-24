@@ -234,6 +234,9 @@ public class InkjetPrinterTest {
 		printer1.switchON();
 		assertEquals("The process is complete", printer1.printOff(session2));
 		assertEquals(1, printer1.paperInTheTray());
+		for(int i = 0; i<printer1.getOutput().size(); i++){
+			System.out.println(" !!!!!!!!!!!!!!!The content of the pages is " + printer1.getOutput().get(i).getFrontPage().getContent());
+		}
 		assertEquals("QWERTQWERT", printer1.getOutput().get(0).getFrontPage().getContent());
 		assertEquals("PLKOIPLKOI", printer1.getOutput().get(1).getFrontPage().getContent());
 	}
@@ -245,7 +248,7 @@ public class InkjetPrinterTest {
 		}
 		printer1.switchON();
 		assertEquals("The process is complete", printer1.printOff(session2));
-		assertEquals(0.3, printer1.calcDecreaseCartridgeRate(session2), 0.1);
+		assertEquals(3.0, printer1.calcDecreaseCartridgeRate(session2), 0.1);
 	}
 
 	@Test

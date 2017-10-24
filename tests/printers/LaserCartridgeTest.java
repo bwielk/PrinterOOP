@@ -16,7 +16,7 @@ public class LaserCartridgeTest {
 	
 	@Test
 	public void canGetLevel(){
-		assertEquals(200.0, cartridge.getLevel(), 0.1);
+		assertEquals(2000.0, cartridge.getLevel(), 0.1);
 	}
 	
 	@Test
@@ -32,6 +32,6 @@ public class LaserCartridgeTest {
 	
 	@Test
 	public void cannotSetLevelHigherThanTheMaximumLevelOfTheCartridge(){
-		assertEquals("The value is too high", cartridge.setLevel(201.0));
+		assertEquals("The value is too high", cartridge.setLevel(2001.0));
 	}
 }

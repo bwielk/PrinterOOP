@@ -109,7 +109,7 @@ public class InkjetPrinter extends Printer {
 		int numOfSheets = session.getNumOfSheetsNeeded();
 		if (this.statusON == true) {
 			if (isEnoughSheetsBySizeNeeded(session)) {
-				if (session.isDuplex() == true) {
+				if (session.isDuplex() == true) { //DUPLEX
 					System.out.println("Printing initsed");
 					int indexOfContent1 = 0;
 					for (int i = 0; i < numOfSheets; i++) {
@@ -124,13 +124,13 @@ public class InkjetPrinter extends Printer {
 						calcDecreaseCartridgeRate(session);
 						System.out.println("WORKS");
 					}
-				} else {
-					int indexOfContent2 = 0;
+				} else {//NO DUPLEX
+					//int indexOfContent2 = 0;
 					//System.out.println("New session");
-					indexOfContent2++;
+					//indexOfContent2++;
 					for (int i = 0; i < numOfSheets; i++) {
 						Paper sheetToPrint = getPaperTray().getTray().remove(0);
-						String content = session.getContentByPage(indexOfContent2);
+						String content = session.getContentByPage(i+1);
 						sheetToPrint.getFrontPage().writeContent(content);
 						this.output.add(sheetToPrint);
 						//System.out.println(getOutput().get(indexOfContent-1).getContentFront());
