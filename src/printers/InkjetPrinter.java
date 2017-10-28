@@ -115,8 +115,6 @@ public class InkjetPrinter extends Printer {
 	                for (int i = 0; i < numOfSheets; i++) {
 	                    pageToPrint++;
 	                    Paper sheetToPrint = getPaperTray().getTray().remove(0);
-	                    System.out.println("Sheet no " + (i+1) + " " + sheetToPrint );
-	                    //System.out.println("Paper in the tray " + getPaperTray().getTray().size());
 	                    sheetToPrint.getFrontPage().writeContent(session.getContentByPage(pageToPrint));
 	                    //System.out.println("Content front " + session.getContentByPage(pageToPrint));
 	                   // System.out.println("Page " + pageToPrint);

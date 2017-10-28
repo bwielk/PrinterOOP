@@ -209,28 +209,25 @@ public class InkjetPrinterTest {
 	
 	@Test
 	public void canPrintOffIfEnoughPaperSizeA4p1(){
+		cartridgesIn(1000.0, 1000.0, 1000.0, 1000.0);
 		for(int i=0; i<20; i++){
 			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A4));
 		}
-		/*System.out.println(printer1.paperInTheTray());
-		System.out.println(session.getContentByPage(1));
-		System.out.println(session.getContentByPage(2));
-		System.out.println("Num of pages " + session.getPages());*/
-		//System.out.println("sheets needed : " + session.getNumOfSheetsNeeded());
 		printer1.switchON();
-		//System.out.println("Paper in the tray " + printer1.paperInTheTray());
 		assertEquals("The process is complete", printer1.printOff(session3));
-		assertEquals(0, printer1.paperInTheTray()); //PRINTING PROCESS
-		/*assertEquals("", printer1.getOutput().get(0).getContentFront());
-		assertEquals("", printer1.getOutput().get(0).getContentBack());
-		assertEquals("", printer1.getOutput().get(1).getContentFront());
-		assertEquals("", printer1.getOutput().get(1).getContentBack());*/
+		assertEquals(19, printer1.paperInTheTray());
+		assertEquals("QWERTQWERTPLKOIPLKOIQWERTQWERTPLKOIPLKOIQWERTQWERT", printer1.getOutput().get(0).getContentFront());
+		assertEquals("PLKOIPLKOI", printer1.getOutput().get(0).getContentBack());
+		assertEquals("The process is complete", printer1.printOff(session3));
+		assertEquals(18, printer1.paperInTheTray());
+		assertEquals("QWERTQWERTPLKOIPLKOIQWERTQWERTPLKOIPLKOIQWERTQWERT", printer1.getOutput().get(1).getContentFront());
+		assertEquals("PLKOIPLKOI", printer1.getOutput().get(1).getContentBack());
 	}
 	
 	@Test
 	public void canPrintOffIfEnoughPaperSizeA4p2(){
 		for(int i=0; i<12; i++){
-			printer1.addPaper(sheet1);
+			printer1.addPaper(new Paper(PaperType.LIGHTWEIGHT, PaperSize.A4));
 		}
 		printer1.switchON();
 		//System.out.println("THE TEST!");
@@ -246,9 +243,6 @@ public class InkjetPrinterTest {
 		printer1.switchON();
 		assertEquals("The process is complete", printer1.printOff(session2));
 		assertEquals(1, printer1.paperInTheTray());
-		for(int i = 0; i<printer1.getOutput().size(); i++){
-			System.out.println(" !!!!!!!!!!!!!!!The content of the pages is " + printer1.getOutput().get(i).getFrontPage().getContent());
-		}
 		assertEquals("QWERTQWERT", printer1.getOutput().get(0).getFrontPage().getContent());
 		assertEquals("PLKOIPLKOI", printer1.getOutput().get(1).getFrontPage().getContent());
 	}
