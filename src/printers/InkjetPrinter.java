@@ -105,46 +105,57 @@ public class InkjetPrinter extends Printer {
 	}
 
 	public String printOff(PrintingSession session) {
-		System.out.println("BEGIN");
-		int numOfSheets = session.getNumOfSheetsNeeded();
-		if (this.statusON == true) {
-			if (isEnoughSheetsBySizeNeeded(session)) {
-				if (session.isDuplex() == true) { //DUPLEX
-					System.out.println("Printing initsed");
-					int indexOfContent1 = 0;
-					for (int i = 0; i < numOfSheets; i++) {
-						indexOfContent1++;
-						Paper sheetToPrint = getPaperTray().getTray().remove(0);
-						sheetToPrint.getFrontPage().writeContent(session.getContentByPage(indexOfContent1));
-						indexOfContent1++;
-						sheetToPrint.getBackPage().writeContent(session.getContentByPage(indexOfContent1));
-						this.output.add(sheetToPrint);
-						this.count += indexOfContent1;
-						setLastFile(session);
-						calcDecreaseCartridgeRate(session);
-						System.out.println("WORKS");
-					}
-				} else {//NO DUPLEX
-					//int indexOfContent2 = 0;
-					//System.out.println("New session");
-					//indexOfContent2++;
-					for (int i = 0; i < numOfSheets; i++) {
-						Paper sheetToPrint = getPaperTray().getTray().remove(0);
-						String content = session.getContentByPage(i+1);
-						sheetToPrint.getFrontPage().writeContent(content);
-						this.output.add(sheetToPrint);
-						//System.out.println(getOutput().get(indexOfContent-1).getContentFront());
-						setLastFile(session);
-						calcDecreaseCartridgeRate(session);
-					}
-					this.count += session.getPages();
-				}
-				return "The process is complete";
-			} else {
-				return "Not enough paper";
-			}
-		} else {
-			return "The printer is OFF. Switch it on";
-		}
+	    System.out.println("BEGIN");
+	    int numOfSheets = session.getNumOfSheetsNeeded();
+	    if (this.statusON == true) {
+	        if (isEnoughSheetsBySizeNeeded(session)) {
+	        	ArrayList<Paper> output = new ArrayList<Paper>();
+	            if (session.isDuplex()) { //DUPLEX
+	                int pageToPrint = 0;
+	                for (int i = 0; i < numOfSheets; i++) {
+	                    pageToPrint++;
+	                    Paper sheetToPrint = getPaperTray().getTray().remove(0);
+	                    System.out.println("Sheet no " + (i+1) + " " + sheetToPrint );
+	                    //System.out.println("Paper in the tray " + getPaperTray().getTray().size());
+	                    sheetToPrint.getFrontPage().writeContent(session.getContentByPage(pageToPrint));
+	                    //System.out.println("Content front " + session.getContentByPage(pageToPrint));
+	                   // System.out.println("Page " + pageToPrint);
+	                    pageToPrint++;
+	                    //System.out.println("Page " + pageToPrint);
+	                    sheetToPrint.getBackPage().writeContent(session.getContentByPage(pageToPrint));
+	                    //System.out.println("Content back " + session.getContentByPage(pageToPrint));
+	                    output.add(sheetToPrint);
+	                    this.count += pageToPrint;
+	                    setLastFile(session);
+	                    calcDecreaseCartridgeRate(session);
+	                }
+	                System.out.println("WORKS  output amount : " + getOutput().size());
+	            } else {//NO DUPLEX
+	                //int indexOfContent2 = 0;
+	                //System.out.println("New session");
+	                //indexOfContent2++;
+	                for (int i = 0; i < numOfSheets; i++) {
+	                    Paper sheetToPrint = getPaperTray().getTray().remove(0);
+	                    String pageToPrint = session.getContentByPage(i+1);
+	                    sheetToPrint.getFrontPage().writeContent(pageToPrint);
+	                    output.add(sheetToPrint);
+	                    //System.out.println(getOutput().get(indexOfContent-1).getContentFront());
+	                    setLastFile(session);
+	                    calcDecreaseCartridgeRate(session);
+	                }
+	                this.count += session.getPages();
+	            }
+	            for(int i=0; i<output.size(); i++){
+                    this.output.add(output.get(i));
+                    System.out.println(this.output.size() + " sheet/s been added");
+                }
+	            System.out.println("The printer has released " + this.output.size() + " sheets");
+	            return "The process is complete";
+	        } else {
+	            return "Not enough paper";
+	        }
+	    } else {
+	        return "The printer is OFF. Switch it on";
+	    }
 	}
 }

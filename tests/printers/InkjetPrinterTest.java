@@ -182,15 +182,27 @@ public class InkjetPrinterTest {
 	public void cannotPrintIfNotEnoughPaperSizeA4PrintsIfPaperAdded(){
 		cartridgesIn(1000.0, 1000.0, 1000.0, 1000.0);
 		for(int i=0; i<7; i++){
-			printer1.addPaper(sheet1);
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A4));
 		}
 		printer1.switchON();
 		assertEquals("Not enough paper", printer1.printOff(session));
 		printer1.addPaper(sheet1);
+		int page = 0;
+		for(int i=0; i<session.getPages() ; i++){
+			page++;
+			System.out.println("page num " + page + " :" + session.getContentByPage(i+1));
+		};
 		assertEquals("The process is complete", printer1.printOff(session));	
 		assertEquals(0, printer1.paperInTheTray()); //PRINTING PROCESS
 		assertEquals("SjdnfjdnbfjdsbfkdbsksjabdbdkdafbfvvsdfdSjdnfjdnbfj", printer1.getOutput().get(0).getContentFront());
 		assertEquals("dsbfkdbsksjabdbdkdafbfvvsdfdSjdnfjdnbfjdsbfkdbsksj", printer1.getOutput().get(0).getContentBack());
+		int num11 = 0;
+		for(int i=0; i<printer1.getOutput().size() ; i++){
+			num11++;
+			System.out.println("PRINTED SHEET FRONT page " + (num11) + " :" + printer1.getOutput().get(i).getContentFront());
+			num11++;
+			System.out.println("PRINTED SHEET BACK page " + (num11) + " :" + printer1.getOutput().get(i).getContentBack());
+		};
 		assertEquals("abdbdkdafbfvvsdfdSjdnfjdnbfjdsbfkdbsksjabdbdkdafbf", printer1.getOutput().get(1).getContentFront());
 		assertEquals("vvsdfdSjdnfjdnbfjdsbfkdbsksjabdbdkdafbfvvsdfdSjdnf", printer1.getOutput().get(1).getContentBack());
 	}
@@ -198,7 +210,7 @@ public class InkjetPrinterTest {
 	@Test
 	public void canPrintOffIfEnoughPaperSizeA4p1(){
 		for(int i=0; i<20; i++){
-			printer1.addPaper(sheet1);
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A4));
 		}
 		/*System.out.println(printer1.paperInTheTray());
 		System.out.println(session.getContentByPage(1));
@@ -229,7 +241,7 @@ public class InkjetPrinterTest {
 	@Test
 	public void canPrintOffWithoutDuplexOnA5(){
 		for(int i=0; i<3; i++){
-			printer1.addPaper(sheet2);
+			printer1.addPaper(new Paper(PaperType.LIGHTWEIGHT, PaperSize.A5));
 		}
 		printer1.switchON();
 		assertEquals("The process is complete", printer1.printOff(session2));
