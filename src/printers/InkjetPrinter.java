@@ -76,11 +76,12 @@ public class InkjetPrinter extends Printer {
 		return true;
 	}
 
-	public InkCartridge updateCartridge(CMYK color, double value, double percentage) {
+	public InkCartridge updateCartridge(CMYK color, double value, double percentageOfUse) {
 		double state = this.cartridges.get(color).getLevel();
-		System.out.println(state);
-		System.out.println(state - value*percentage);
-		System.out.println("The cartridges have been upddated ");
+		System.out.println("State of " + color + ": " + state );
+		System.out.println("The new state of the cartridge is : " + (state - value*percentageOfUse));
+		System.out.println("The " + color + " cartridge has been upddated ");
+		this.cartridges.get(color).setLevel(state - value*percentageOfUse);
 		return this.cartridges.get(color);
 	}
 
@@ -105,7 +106,6 @@ public class InkjetPrinter extends Printer {
 	}
 
 	public String printOff(PrintingSession session) {
-	    System.out.println("BEGIN");
 	    int numOfSheets = session.getNumOfSheetsNeeded();
 	    if (this.statusON == true) {
 	        if (isEnoughSheetsBySizeNeeded(session)) {
@@ -116,38 +116,26 @@ public class InkjetPrinter extends Printer {
 	                    pageToPrint++;
 	                    Paper sheetToPrint = getPaperTray().getTray().remove(0);
 	                    sheetToPrint.getFrontPage().writeContent(session.getContentByPage(pageToPrint));
-	                    //System.out.println("Content front " + session.getContentByPage(pageToPrint));
-	                   // System.out.println("Page " + pageToPrint);
 	                    pageToPrint++;
-	                    //System.out.println("Page " + pageToPrint);
 	                    sheetToPrint.getBackPage().writeContent(session.getContentByPage(pageToPrint));
-	                    //System.out.println("Content back " + session.getContentByPage(pageToPrint));
 	                    output.add(sheetToPrint);
 	                    this.count += pageToPrint;
-	                    setLastFile(session);
-	                    calcDecreaseCartridgeRate(session);
 	                }
-	                System.out.println("WORKS  output amount : " + getOutput().size());
 	            } else {//NO DUPLEX
-	                //int indexOfContent2 = 0;
-	                //System.out.println("New session");
-	                //indexOfContent2++;
 	                for (int i = 0; i < numOfSheets; i++) {
 	                    Paper sheetToPrint = getPaperTray().getTray().remove(0);
 	                    String pageToPrint = session.getContentByPage(i+1);
 	                    sheetToPrint.getFrontPage().writeContent(pageToPrint);
 	                    output.add(sheetToPrint);
-	                    //System.out.println(getOutput().get(indexOfContent-1).getContentFront());
-	                    setLastFile(session);
-	                    calcDecreaseCartridgeRate(session);
+	                    this.count += (i+1);	                    
 	                }
 	                this.count += session.getPages();
 	            }
 	            for(int i=0; i<output.size(); i++){
                     this.output.add(output.get(i));
-                    System.out.println(this.output.size() + " sheet/s been added");
                 }
-	            System.out.println("The printer has released " + this.output.size() + " sheets");
+	            calcDecreaseCartridgeRate(session);
+	            setLastFile(session);
 	            return "The process is complete";
 	        } else {
 	            return "Not enough paper";
