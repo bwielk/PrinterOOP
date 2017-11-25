@@ -41,12 +41,12 @@ public class InkjetPrinterTest {
 	public void test() {
 		content = "";
 		for(int i=0; i<20; i++){
-			String sample = "Sjdnfjdnbfjdsbfkdbsksjabdbdkdafbfvvsdfd";
-			content += sample;
+			String pieceOfText = "Sjdnfjdnbfjdsbfkdbsksjabdbdkdafbfvvsdfd";//780 chars in total
+			content += pieceOfText;
 		}
 		
-		content2 = "QWERTQWERTPLKOIPLKOI";
-		content3 = "QWERTQWERTPLKOIPLKOIQWERTQWERTPLKOIPLKOIQWERTQWERTPLKOIPLKOI";
+		content2 = "QWERTQWERTPLKOIPLKOI";//20 chars
+		content3 = "QWERTQWERTPLKOIPLKOIQWERTQWERTPLKOIPLKOIQWERTQWERTPLKOIPLKOI";//60 chars
 		printer1 = new InkjetPrinter("HP", "443", 200); 
 		cartridge1 = new InkCartridge(CMYK.CYAN);
 		cartridge2 = new InkCartridge(CMYK.MAGENTA);
@@ -54,9 +54,9 @@ public class InkjetPrinterTest {
 		cartridge4 = new InkCartridge(CMYK.KEY);
 		sheet1 = new Paper(PaperType.MATT, PaperSize.A4);
 		sheet2 = new Paper(PaperType.LIGHTWEIGHT, PaperSize.A5);
-		session = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A4, true, Resolution.HIGH);
-		session2 = new PrintingSession(content2, PrintingMode.GRAYSCALE, PaperSize.A5, false, Resolution.LOW);
-		session3 = new PrintingSession(content3, PrintingMode.COLOUR, PaperSize.A4, true, Resolution.MEDIUM);
+		session = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A4, true, Resolution.HIGH);//8 sheets
+		session2 = new PrintingSession(content2, PrintingMode.GRAYSCALE, PaperSize.A5, false, Resolution.LOW);//2 sheets
+		session3 = new PrintingSession(content3, PrintingMode.COLOUR, PaperSize.A4, true, Resolution.MEDIUM);//2 sheets
 		session4 = new PrintingSession(content3, PrintingMode.GRAYSCALE, PaperSize.A5, false, Resolution.LOW);
 		session5 = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A3, true, Resolution.LOW);
 	}
@@ -123,13 +123,13 @@ public class InkjetPrinterTest {
 	@Test
 	public void areCartridgesFull(){
 		cartridgesIn(200.0, 340.0, 1000.0, 1000.0);
-		assertEquals(false, printer1.cartridgesFull());
+		assertEquals(false, printer1.cartridgesEnoughInk());
 	}
 	
 	@Test
 	public void areCartridgesFull2(){
 		cartridgesIn(1000.0, 210.0, 300.0, 210.0);
-		assertEquals(true, printer1.cartridgesFull());
+		assertEquals(true, printer1.cartridgesEnoughInk());
 	}
 	
 	@Test //if inherits
@@ -343,14 +343,43 @@ public class InkjetPrinterTest {
 		printer1.setCount(0);
 		assertEquals(0, printer1.getCount());
 		printer1.printOff(session2);//nduplex
-		System.out.println("A5 pages " + session2.getPages() + " " + session2.getContent().length());
-		System.out.println("pages printed so far " + printer1.getCount());
 		printer1.printOff(session5);
-		System.out.println("A3 pages " + session5.getPages() + " " + session5.getContent().length());
-		System.out.println("pages printed so far " + printer1.getCount());
 		printer1.printOff(session);
-		System.out.println("A4 pages " + session.getPages() + " " + session.getContent().length());
-		System.out.println("pages printed so far " + printer1.getCount());
 		assertEquals(26, printer1.getCount());
+	}
+	
+	@Test
+	public void canRepeatPrintingOfTheLastSession(){
+		cartridgesIn(1000.0, 1000.0, 1000.0, 1000.0);
+		for(int i=0; i<20; i++){
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A3));
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A4));
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A5));
+		}
+		printer1.switchON();
+		printer1.setCount(0);
+		assertEquals(0, printer1.getCount());
+		printer1.printOff(session2);//nduplex//2
+		printer1.printOff(session3);//1
+		printer1.printOff(session);//8
+		printer1.printLastSession();//8
+		assertEquals(19, printer1.getOutput().size());
+	}
+	
+	@Test
+	public void cannotRepeatPrintingOfTheLastSessionIfNotEnoughSheetsOfPaper(){
+		cartridgesIn(1000.0, 1000.0, 1000.0, 1000.0);
+		for(int i=0; i<10; i++){
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A3));
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A4));
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A5));
+		}
+		printer1.switchON();
+		printer1.setCount(0);
+		assertEquals(0, printer1.getCount());
+		printer1.printOff(session2);//nduplex//2
+		printer1.printOff(session3);//1
+		printer1.printOff(session);//8
+		assertEquals("Not enough paper", printer1.printOff(printer1.getLastFile()));
 	}
 }

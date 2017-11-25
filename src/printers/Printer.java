@@ -8,11 +8,11 @@ public class Printer {
 	protected PaperTray paperTray;
 	protected boolean statusON;
 
-	public Printer(String brand, String model, int limit) {
+	public Printer(String brand, String model, int paperTrayLimit) {
 		this.brand = brand;
 		this.model = model;
 		this.count = 0;
-		this.paperTray = new PaperTray(limit);
+		this.paperTray = new PaperTray(paperTrayLimit);
 		this.statusON = false;
 	}
 

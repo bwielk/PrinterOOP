@@ -6,13 +6,13 @@ import java.util.HashMap;
 public class InkjetPrinter extends Printer {
 
 	private HashMap<CMYK, InkCartridge> cartridges;
-	private PrintingSession file;
+	private PrintingSession lastSession;
 	private ArrayList<Paper> output;
 
-	public InkjetPrinter(String brand, String model, int limit) {
-		super(brand, model, limit);
+	public InkjetPrinter(String brand, String model, int paperTrayLimit) {
+		super(brand, model, paperTrayLimit);
 		this.cartridges = new HashMap<CMYK, InkCartridge>();
-		this.file = null;
+		this.lastSession = null;
 		this.output = new ArrayList<Paper>();
 	}
 
@@ -25,11 +25,11 @@ public class InkjetPrinter extends Printer {
 	}
 
 	public PrintingSession getLastFile() {
-		return file;
+		return lastSession;
 	}
 
 	public void setLastFile(PrintingSession file) {
-		this.file = file;
+		this.lastSession = file;
 	}
 
 	public String acceptCartridge(InkCartridge cartridge) {
@@ -67,7 +67,7 @@ public class InkjetPrinter extends Printer {
 		return "ATTENTION! The levels of inks: " + summary + " are low!";
 	}
 
-	public boolean cartridgesFull() {
+	public boolean cartridgesEnoughInk() {
 		for (InkCartridge cartridge : cartridges.values()) {
 			if (cartridge.getLevel() <= (double) 200.0) {
 				return false;
@@ -109,7 +109,7 @@ public class InkjetPrinter extends Printer {
 		
 	    int numOfSheets = session.getNumOfSheetsNeeded();
 	    if (this.statusON == true) {
-	        if (isEnoughSheetsBySizeNeeded(session) && cartridgesFull()) {
+	        if (isEnoughSheetsBySizeNeeded(session) && cartridgesEnoughInk()) {
 	        	ArrayList<Paper> output = new ArrayList<Paper>();
 	        	int pageToPrint = 0;
 	            if (session.isDuplex()) { //DUPLEX
@@ -143,5 +143,9 @@ public class InkjetPrinter extends Printer {
 	    } else {
 	        return "The printer is OFF. Switch it on";
 	    }
+	}
+	
+	public void printLastSession(){
+		printOff(this.lastSession);
 	}
 }
