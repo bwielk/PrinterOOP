@@ -31,6 +31,10 @@ public class Printer {
 	public int getCount() {
 		return count;
 	}
+	
+	public void setCount(int number){
+		this.count = number;
+	}
 
 	public PaperTray getPaperTray() {
 		return paperTray;

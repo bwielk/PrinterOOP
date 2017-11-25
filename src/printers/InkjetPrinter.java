@@ -106,12 +106,13 @@ public class InkjetPrinter extends Printer {
 	}
 
 	public String printOff(PrintingSession session) {
+		
 	    int numOfSheets = session.getNumOfSheetsNeeded();
 	    if (this.statusON == true) {
-	        if (isEnoughSheetsBySizeNeeded(session)) {
+	        if (isEnoughSheetsBySizeNeeded(session) && cartridgesFull()) {
 	        	ArrayList<Paper> output = new ArrayList<Paper>();
+	        	int pageToPrint = 0;
 	            if (session.isDuplex()) { //DUPLEX
-	                int pageToPrint = 0;
 	                for (int i = 0; i < numOfSheets; i++) {
 	                    pageToPrint++;
 	                    Paper sheetToPrint = getPaperTray().getTray().remove(0);
@@ -119,18 +120,17 @@ public class InkjetPrinter extends Printer {
 	                    pageToPrint++;
 	                    sheetToPrint.getBackPage().writeContent(session.getContentByPage(pageToPrint));
 	                    output.add(sheetToPrint);
-	                    this.count += pageToPrint;
 	                }
 	            } else {//NO DUPLEX
 	                for (int i = 0; i < numOfSheets; i++) {
 	                    Paper sheetToPrint = getPaperTray().getTray().remove(0);
-	                    String pageToPrint = session.getContentByPage(i+1);
-	                    sheetToPrint.getFrontPage().writeContent(pageToPrint);
+	                    String pageToPrintFromSheetToPrint = session.getContentByPage(i+1);
+	                    sheetToPrint.getFrontPage().writeContent(pageToPrintFromSheetToPrint);
 	                    output.add(sheetToPrint);
-	                    this.count += (i+1);	                    
+	                    pageToPrint = i+1;	                    
 	                }
-	                this.count += session.getPages();
 	            }
+	            this.count += pageToPrint;
 	            for(int i=0; i<output.size(); i++){
                     this.output.add(output.get(i));
                 }

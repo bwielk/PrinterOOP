@@ -20,6 +20,7 @@ public class InkjetPrinterTest {
 	private PrintingSession session2;
 	private PrintingSession session3;
 	private PrintingSession session4;
+	private PrintingSession session5;
 	private String content;
 	private String content2;
 	private String content3;
@@ -57,6 +58,7 @@ public class InkjetPrinterTest {
 		session2 = new PrintingSession(content2, PrintingMode.GRAYSCALE, PaperSize.A5, false, Resolution.LOW);
 		session3 = new PrintingSession(content3, PrintingMode.COLOUR, PaperSize.A4, true, Resolution.MEDIUM);
 		session4 = new PrintingSession(content3, PrintingMode.GRAYSCALE, PaperSize.A5, false, Resolution.LOW);
+		session5 = new PrintingSession(content, PrintingMode.GRAYSCALE, PaperSize.A3, true, Resolution.LOW);
 	}
 	
 	@Test
@@ -327,5 +329,28 @@ public class InkjetPrinterTest {
 		}
 		printer1.switchON();
 		assertEquals("The process is complete", printer1.printOff(session2));
+	}
+	
+	@Test
+	public void printerRemembersNumbersOfPagesPrintedDuringNumerousSessions(){
+		cartridgesIn(1000.0, 1000.0, 1000.0, 1000.0);
+		for(int i=0; i<10; i++){
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A3));
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A4));
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A5));
+		}
+		printer1.switchON();
+		printer1.setCount(0);
+		assertEquals(0, printer1.getCount());
+		printer1.printOff(session2);//nduplex
+		System.out.println("A5 pages " + session2.getPages() + " " + session2.getContent().length());
+		System.out.println("pages printed so far " + printer1.getCount());
+		printer1.printOff(session5);
+		System.out.println("A3 pages " + session5.getPages() + " " + session5.getContent().length());
+		System.out.println("pages printed so far " + printer1.getCount());
+		printer1.printOff(session);
+		System.out.println("A4 pages " + session.getPages() + " " + session.getContent().length());
+		System.out.println("pages printed so far " + printer1.getCount());
+		assertEquals(26, printer1.getCount());
 	}
 }
