@@ -357,8 +357,6 @@ public class InkjetPrinterTest {
 			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A5));
 		}
 		printer1.switchON();
-		printer1.setCount(0);
-		assertEquals(0, printer1.getCount());
 		printer1.printOff(session2);//nduplex//2
 		printer1.printOff(session3);//1
 		printer1.printOff(session);//8
@@ -375,11 +373,40 @@ public class InkjetPrinterTest {
 			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A5));
 		}
 		printer1.switchON();
-		printer1.setCount(0);
-		assertEquals(0, printer1.getCount());
 		printer1.printOff(session2);//nduplex//2
 		printer1.printOff(session3);//1
 		printer1.printOff(session);//8
 		assertEquals("Not enough paper", printer1.printOff(printer1.getLastFile()));
+	}
+	
+	@Test
+	public void canPrintSpecificPage(){
+		cartridgesIn(1000.0, 1000.0, 1000.0, 1000.0);
+		for(int i=0; i<4; i++){
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A3));
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A4));
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A5));
+		}
+		printer1.switchON();
+		/*for(int i=0; i<session.getPages(); i++){
+			System.out.println("This is page " + (i+1) + ": " + session.getContentByPage(i+1));
+		}
+		for(int i=0; i<session2.getPages(); i++){
+			System.out.println("This is page " + (i+1) + ": " + session2.getContentByPage(i+1));
+		}
+		for(int i=0; i<session3.getPages(); i++){
+			System.out.println("This is page " + (i+1) + ": " + session3.getContentByPage(i+1));
+		}*/
+		printer1.printOffSpecificPage(session, 10);
+		assertEquals("jabdbdkdafbfvvsdfdSjdnfjdnbfjdsbfkdbsksjabdbdkdafb", printer1.getOutput().get(0).getContentFront());
+		printer1.getOutput().remove(0);
+		printer1.printOffSpecificPage(session, 12);
+		assertEquals("fjdnbfjdsbfkdbsksjabdbdkdafbfvvsdfdSjdnfjdnbfjdsbf", printer1.getOutput().get(0).getContentFront());
+		printer1.getOutput().remove(0);
+		printer1.printOffSpecificPage(session2, 1);
+		assertEquals("QWERTQWERT", printer1.getOutput().get(0).getContentFront());
+		printer1.getOutput().remove(0);
+		printer1.printOffSpecificPage(session3, 2);
+		assertEquals("PLKOIPLKOI", printer1.getOutput().get(0).getContentFront());
 	}
 }

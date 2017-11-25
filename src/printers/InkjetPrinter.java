@@ -118,8 +118,10 @@ public class InkjetPrinter extends Printer {
 	                    Paper sheetToPrint = getPaperTray().getTray().remove(0);
 	                    sheetToPrint.getFrontPage().writeContent(session.getContentByPage(pageToPrint));
 	                    pageToPrint++;
-	                    sheetToPrint.getBackPage().writeContent(session.getContentByPage(pageToPrint));
-	                    output.add(sheetToPrint);
+	                    if(session.getPages()>1){
+	                    	sheetToPrint.getBackPage().writeContent(session.getContentByPage(pageToPrint));
+	                    	output.add(sheetToPrint);
+	                    }
 	                }
 	            } else {//NO DUPLEX
 	                for (int i = 0; i < numOfSheets; i++) {
@@ -147,5 +149,10 @@ public class InkjetPrinter extends Printer {
 	
 	public void printLastSession(){
 		printOff(this.lastSession);
+	}
+	
+	public void printOffSpecificPage(PrintingSession session, int pageNum){
+		PrintingSession newSession = new PrintingSession(session.getContentByPage(pageNum), session.getMode(), session.getSize(), session.isDuplex(), session.getRes());
+		printOff(newSession);
 	}
 }
