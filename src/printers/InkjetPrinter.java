@@ -120,8 +120,8 @@ public class InkjetPrinter extends Printer {
 	                    pageToPrint++;
 	                    if(session.getPages()>1){
 	                    	sheetToPrint.getBackPage().writeContent(session.getContentByPage(pageToPrint));
-	                    	output.add(sheetToPrint);
 	                    }
+	                    output.add(sheetToPrint);
 	                }
 	            } else {//NO DUPLEX
 	                for (int i = 0; i < numOfSheets; i++) {
