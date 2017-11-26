@@ -166,12 +166,12 @@ public class InkjetPrinter extends Printer {
 		if(startPage > session.getPages() || lastPage > session.getPages()){
 			return "The file contains " + session.getPages() + " pages. Enter the correct parameters";
 		}
-			String content = "";
-			for(int i=startPage; i<(lastPage+1); i++){
-				content += session.getContentByPage(i);
-			}
-			PrintingSession newSession = new PrintingSession(content, session.getMode(), session.getSize(), session.isDuplex(), session.getRes());
-			printOff(newSession);
-			return "";
+		String content = "";
+		for(int i=startPage; i<(lastPage+1); i++){
+			content += session.getContentByPage(i);
+		}
+		PrintingSession newSession = new PrintingSession(content, session.getMode(), session.getSize(), session.isDuplex(), session.getRes());
+		printOff(newSession);
+		return "The process has been completed";
 	}
 }
