@@ -37,6 +37,18 @@ public class InkjetPrinterTest {
 		
 	}
 	
+	public void printContentOfThreeSessions(PrintingSession session1, PrintingSession session2, PrintingSession session3){
+		for(int i=0; i<session1.getPages(); i++){
+			System.out.println("This is page " + (i+1) + ": " + session1.getContentByPage(i+1));
+		}
+		for(int i=0; i<session2.getPages(); i++){
+			System.out.println("This is page " + (i+1) + ": " + session2.getContentByPage(i+1));
+		}
+		for(int i=0; i<session3.getPages(); i++){
+		System.out.println("This is page " + (i+1) + ": " + session3.getContentByPage(i+1));
+		}
+	}
+	
 	@Before
 	public void test() {
 		content = "";
@@ -388,15 +400,6 @@ public class InkjetPrinterTest {
 			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A5));
 		}
 		printer1.switchON();
-		/*for(int i=0; i<session.getPages(); i++){
-			System.out.println("This is page " + (i+1) + ": " + session.getContentByPage(i+1));
-		}
-		for(int i=0; i<session2.getPages(); i++){
-			System.out.println("This is page " + (i+1) + ": " + session2.getContentByPage(i+1));
-		}
-		for(int i=0; i<session3.getPages(); i++){
-			System.out.println("This is page " + (i+1) + ": " + session3.getContentByPage(i+1));
-		}*/
 		printer1.printOffSpecificPage(session, 10);
 		assertEquals("jabdbdkdafbfvvsdfdSjdnfjdnbfjdsbfkdbsksjabdbdkdafb", printer1.getOutput().get(0).getContentFront());
 		printer1.getOutput().remove(0);
@@ -423,5 +426,63 @@ public class InkjetPrinterTest {
 		assertEquals("jabdbdkdafbfvvsdfdSjdnfjdnbfjdsbfkdbsksjabdbdkdafb", printer1.getOutput().get(0).getContentFront());
 		printer1.getOutput().remove(0);
 		assertEquals("The page doesn't exist. The file consists of 16 pages.", printer1.printOffSpecificPage(session, 18));
+	}
+	
+	@Test
+	public void canPrintSpecPageAgain(){
+		cartridgesIn(1000.0, 1000.0, 1000.0, 1000.0);
+		for(int i=0; i<2; i++){
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A3));
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A4));
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A5));
+		}
+		printer1.switchON();
+		printer1.printOffSpecificPage(session, 10);
+		assertEquals("jabdbdkdafbfvvsdfdSjdnfjdnbfjdsbfkdbsksjabdbdkdafb", printer1.getOutput().get(0).getContentFront());
+		assertEquals(1, printer1.getOutput().size());
+		printer1.printLastSession();
+		assertEquals(2, printer1.getOutput().size());
+	}
+	
+	@Test
+	public void canPrintARangeOfPages(){
+		cartridgesIn(1000.0, 1000.0, 1000.0, 1000.0);
+		for(int i=0; i<10; i++){
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A4));
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A3));
+		}
+		printContentOfThreeSessions(session, session2, session3);
+		printer1.switchON();
+		printer1.printOffRangeOfPages(session, 5, 10);
+		assertEquals(3, printer1.getOutput().size());
+		assertEquals("jdnbfjdsbfkdbsksjabdbdkdafbfvvsdfdSjdnfjdnbfjdsbfk",printer1.getOutput().get(0).getContentFront());
+		assertEquals("jdsbfkdbsksjabdbdkdafbfvvsdfdSjdnfjdnbfjdsbfkdbsks",printer1.getOutput().get(2).getContentFront());
+		assertEquals("jabdbdkdafbfvvsdfdSjdnfjdnbfjdsbfkdbsksjabdbdkdafb",printer1.getOutput().get(2).getContentBack());
+	}
+	
+	@Test
+	public void printingRangeOfPagesInputErrorWrongParameters(){
+		cartridgesIn(1000.0, 1000.0, 1000.0, 1000.0);
+		for(int i=0; i<10; i++){
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A4));
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A3));
+		}
+		printContentOfThreeSessions(session, session2, session3);
+		printer1.switchON();
+		assertEquals("Wrong input. First parameter should be less that the second one",printer1.printOffRangeOfPages(session, 10, 5));
+		assertEquals("Wrong input. First parameter should be less that the second one",printer1.printOffRangeOfPages(session, 10, 10));
+	}
+	
+	@Test
+	public void printingRangeOfPagesInputErrorNoSuchPages(){
+		cartridgesIn(1000.0, 1000.0, 1000.0, 1000.0);
+		for(int i=0; i<10; i++){
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A4));
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A3));
+		}
+		printContentOfThreeSessions(session, session2, session3);
+		printer1.switchON();
+		assertEquals("The file contains 16 pages. Enter the correct parameters",printer1.printOffRangeOfPages(session, 10, 25));
+		assertEquals("The file contains 16 pages. Enter the correct parameters",printer1.printOffRangeOfPages(session, 10, 17));
 	}
 }

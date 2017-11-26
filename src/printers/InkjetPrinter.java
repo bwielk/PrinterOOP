@@ -158,4 +158,17 @@ public class InkjetPrinter extends Printer {
 		}
 		return "The page doesn't exist. The file consists of " + session.getPages() + " pages.";
 	}
+	
+	public String printOffRangeOfPages(PrintingSession session, int startPage, int lastPage){
+		if(startPage>lastPage || startPage == lastPage){
+			return "Wrong input. First parameter should be less that the second one";
+		}
+			String content = "";
+			for(int i=startPage; i<(lastPage+1); i++){
+				content += session.getContentByPage(i);
+			}
+			PrintingSession newSession = new PrintingSession(content, session.getMode(), session.getSize(), session.isDuplex(), session.getRes());
+			printOff(newSession);
+			return "";
+	}
 }
