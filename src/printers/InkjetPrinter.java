@@ -151,8 +151,11 @@ public class InkjetPrinter extends Printer {
 		printOff(this.lastSession);
 	}
 	
-	public void printOffSpecificPage(PrintingSession session, int pageNum){
-		PrintingSession newSession = new PrintingSession(session.getContentByPage(pageNum), session.getMode(), session.getSize(), session.isDuplex(), session.getRes());
-		printOff(newSession);
+	public String printOffSpecificPage(PrintingSession session, int pageNum){
+		if(pageNum <= session.getPages() && pageNum > 0){
+			PrintingSession newSession = new PrintingSession(session.getContentByPage(pageNum), session.getMode(), session.getSize(), session.isDuplex(), session.getRes());
+			printOff(newSession);
+		}
+		return "The page doesn't exist. The file consists of " + session.getPages() + " pages.";
 	}
 }

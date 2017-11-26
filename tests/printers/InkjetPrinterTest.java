@@ -409,4 +409,19 @@ public class InkjetPrinterTest {
 		printer1.printOffSpecificPage(session3, 2);
 		assertEquals("PLKOIPLKOI", printer1.getOutput().get(0).getContentFront());
 	}
+	
+	@Test
+	public void cannotPrintSpecificPageIfItDoesntExist(){
+		cartridgesIn(1000.0, 1000.0, 1000.0, 1000.0);
+		for(int i=0; i<2; i++){
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A3));
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A4));
+			printer1.addPaper(new Paper(PaperType.MATT, PaperSize.A5));
+		}
+		printer1.switchON();
+		printer1.printOffSpecificPage(session, 10);
+		assertEquals("jabdbdkdafbfvvsdfdSjdnfjdnbfjdsbfkdbsksjabdbdkdafb", printer1.getOutput().get(0).getContentFront());
+		printer1.getOutput().remove(0);
+		assertEquals("The page doesn't exist. The file consists of 16 pages.", printer1.printOffSpecificPage(session, 18));
+	}
 }
