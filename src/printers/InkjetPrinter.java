@@ -163,6 +163,9 @@ public class InkjetPrinter extends Printer {
 		if(startPage>lastPage || startPage == lastPage){
 			return "Wrong input. First parameter should be less that the second one";
 		}
+		if(startPage > session.getPages() || lastPage > session.getPages()){
+			return "The file contains " + session.getPages() + " pages. Enter the correct parameters";
+		}
 			String content = "";
 			for(int i=startPage; i<(lastPage+1); i++){
 				content += session.getContentByPage(i);
