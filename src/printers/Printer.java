@@ -72,7 +72,7 @@ public class Printer {
 		return (session.getNumOfSheetsNeeded() <= counter);
 	}
 
-	public String printOff() {
+	/*public String printOff() {
 		if (this.statusON == true) {
 			if (getPaperTray().paperInTheTray() > 0) {
 				int sheetsIn = getPaperTray().getTray().size();
@@ -85,5 +85,5 @@ public class Printer {
 		} else {
 			return "The printer is OFF. Switch it on";
 		}
-	}
+	}*/
 }

@@ -67,7 +67,7 @@ public class InkjetPrinter extends Printer {
 		return "ATTENTION! The levels of inks: " + summary + " are low!";
 	}
 
-	public boolean cartridgesEnoughInk() {
+	public boolean cartridgesHaveEnoughInk() {
 		for (InkCartridge cartridge : cartridges.values()) {
 			if (cartridge.getLevel() <= (double) 200.0) {
 				return false;
@@ -78,14 +78,15 @@ public class InkjetPrinter extends Printer {
 
 	public InkCartridge updateCartridge(CMYK color, double value, double percentageOfUse) {
 		double state = this.cartridges.get(color).getLevel();
-		System.out.println("State of " + color + ": " + state );
+		/*System.out.println("State of " + color + ": " + state );
 		System.out.println("The new state of the cartridge is : " + (state - value*percentageOfUse));
 		System.out.println("The " + color + " cartridge has been upddated ");
+		*/
 		this.cartridges.get(color).setLevel(state - value*percentageOfUse);
 		return this.cartridges.get(color);
 	}
 
-	public double calcDecreaseCartridgeRate(PrintingSession session) {
+	private double calcDecreaseCartridgeRate(PrintingSession session) {
 		double a = (double) session.getRes().getInkUseRate();
 		double b = (double) session.getContent().length();
 		double c = (double) session.getSize().getCapacity();
@@ -104,37 +105,46 @@ public class InkjetPrinter extends Printer {
 		}
 		return result;
 	}
+	
+	private void duplexPrinting(PrintingSession session, int numOfSheets, ArrayList<Paper> internalOutput){
+		int pageToPrint = 0; 
+		for (int i = 0; i < numOfSheets; i++) {
+             pageToPrint++;
+             Paper sheetToPrint = getPaperTray().getTray().remove(0);
+             sheetToPrint.getFrontPage().writeContent(session.getContentByPage(pageToPrint));
+             pageToPrint++;
+             if(session.getPages()>1){
+                sheetToPrint.getBackPage().writeContent(session.getContentByPage(pageToPrint));
+             }
+             internalOutput.add(sheetToPrint);
+          }
+		this.count += pageToPrint;
+	}
+		   
+	private void noDuplexPrinting(PrintingSession session, int numOfSheets, ArrayList<Paper> internalOutput){
+		int pageToPrint = 0;
+		for (int i = 0; i < numOfSheets; i++) {
+            Paper sheetToPrint = getPaperTray().getTray().remove(0);
+            String pageToPrintFromSheetToPrint = session.getContentByPage(i+1);
+            sheetToPrint.getFrontPage().writeContent(pageToPrintFromSheetToPrint);
+            internalOutput.add(sheetToPrint);
+            pageToPrint = i+1;	                    
+        }
+		this.count += pageToPrint;
+	}
 
 	public String printOff(PrintingSession session) {
-		
 	    int numOfSheets = session.getNumOfSheetsNeeded();
 	    if (this.statusON == true) {
-	        if (isEnoughSheetsBySizeNeeded(session) && cartridgesEnoughInk()) {
-	        	ArrayList<Paper> output = new ArrayList<Paper>();
-	        	int pageToPrint = 0;
-	            if (session.isDuplex()) { //DUPLEX
-	                for (int i = 0; i < numOfSheets; i++) {
-	                    pageToPrint++;
-	                    Paper sheetToPrint = getPaperTray().getTray().remove(0);
-	                    sheetToPrint.getFrontPage().writeContent(session.getContentByPage(pageToPrint));
-	                    pageToPrint++;
-	                    if(session.getPages()>1){
-	                    	sheetToPrint.getBackPage().writeContent(session.getContentByPage(pageToPrint));
-	                    }
-	                    output.add(sheetToPrint);
-	                }
-	            } else {//NO DUPLEX
-	                for (int i = 0; i < numOfSheets; i++) {
-	                    Paper sheetToPrint = getPaperTray().getTray().remove(0);
-	                    String pageToPrintFromSheetToPrint = session.getContentByPage(i+1);
-	                    sheetToPrint.getFrontPage().writeContent(pageToPrintFromSheetToPrint);
-	                    output.add(sheetToPrint);
-	                    pageToPrint = i+1;	                    
-	                }
+	        if (isEnoughSheetsBySizeNeeded(session) && cartridgesHaveEnoughInk()) {
+	        	ArrayList<Paper> internalOutput = new ArrayList<Paper>();
+	        	if (session.isDuplex()) {
+	        		duplexPrinting(session, numOfSheets, internalOutput);
+	            } else {
+	            	noDuplexPrinting(session, numOfSheets, internalOutput);  
 	            }
-	            this.count += pageToPrint;
-	            for(int i=0; i<output.size(); i++){
-                    this.output.add(output.get(i));
+	            for(int i=0; i<internalOutput.size(); i++){
+                    this.output.add(internalOutput.get(i));
                 }
 	            calcDecreaseCartridgeRate(session);
 	            setLastFile(session);

@@ -45,7 +45,7 @@ public class LaserPrinter extends Printer{
 		return "ATTENTION! The levels of toners: " + summary + " are low!";
 	}
 	
-	@Override
+	/*
 	public String printOff() {
 		if (this.statusON == true) {
 			if (getPaperTray().paperInTheTray() > 0) {
@@ -59,5 +59,5 @@ public class LaserPrinter extends Printer{
 		} else {
 			return "The printer is OFF. Switch it on";
 		}
-	}
+	}*/
 }

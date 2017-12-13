@@ -50,7 +50,7 @@ public class InkjetPrinterTest {
 	}
 	
 	@Before
-	public void test() {
+	public void before() {
 		content = "";
 		for(int i=0; i<20; i++){
 			String pieceOfText = "Sjdnfjdnbfjdsbfkdbsksjabdbdkdafbfvvsdfd";//780 chars in total
@@ -135,13 +135,13 @@ public class InkjetPrinterTest {
 	@Test
 	public void areCartridgesFull(){
 		cartridgesIn(200.0, 340.0, 1000.0, 1000.0);
-		assertEquals(false, printer1.cartridgesEnoughInk());
+		assertEquals(false, printer1.cartridgesHaveEnoughInk());
 	}
 	
 	@Test
 	public void areCartridgesFull2(){
 		cartridgesIn(1000.0, 210.0, 300.0, 210.0);
-		assertEquals(true, printer1.cartridgesEnoughInk());
+		assertEquals(true, printer1.cartridgesHaveEnoughInk());
 	}
 	
 	@Test //if inherits
